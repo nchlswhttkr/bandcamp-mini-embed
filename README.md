@@ -2,7 +2,12 @@
 
 A small Svelte client for embedding albums from Bandcamp into your site.
 
+- Handles compilation albums and albums with limited preview tracks
+- Embed multiple albums in a single page without conflicts
+
 Does this count as a microfrontend?
+
+![Three music players sit side by side - each player shows an album cover, details about the current song, music controls, and a list of tracks](./screenshot.png)
 
 Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Other icons belong to [Feather](https://feathericons.com/).
 
@@ -105,4 +110,5 @@ TODO
  - Investigate dynamically generating/linking caption files
  - Error handling if no tracks are streamable
  - Remove/resolve workaround with inconsistent seeking on Firefox
+ - Fix keyboard navigation, disabled elements
  -->
