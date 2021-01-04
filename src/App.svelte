@@ -91,7 +91,7 @@
     } else if (currentTrack === trackIndex) {
       audio.play();
     } else {
-      currentTime = 0;
+      seek(0);
       currentTrack = trackIndex;
     }
   }
@@ -114,7 +114,7 @@
   function handleSeeking(event) {
     switch (event.type) {
       case "change":
-        currentTime = event.target.value;
+        seek(event.target.value);
         seekingTime = undefined;
         break;
       case "input":
@@ -123,6 +123,14 @@
       default:
         break;
     }
+  }
+
+  function seek(time) {
+    // Seeking via currentTime is inconsistent in Firefox, seems to be a
+    // regression of https://github.com/sveltejs/svelte/issues/3524
+    // Instead, rely on setting it via DOM
+    document.getElementById(`bandcamp-audio-${albumId}`).currentTime = time;
+    // currentTime = time
   }
 </script>
 
@@ -245,6 +253,7 @@
 
 <!-- svelte-ignore a11y-media-has-caption -->
 <audio
+  id={`bandcamp-audio-${albumId}`}
   bind:this={audio}
   bind:paused
   bind:currentTime

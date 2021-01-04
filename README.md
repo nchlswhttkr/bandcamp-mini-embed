@@ -104,4 +104,5 @@ TODO
  - Look for guidance on range input accessibility
  - Investigate dynamically generating/linking caption files
  - Error handling if no tracks are streamable
+ - Remove/resolve workaround with inconsistent seeking on Firefox
  -->
