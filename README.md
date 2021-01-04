@@ -21,6 +21,4 @@ TODO
  - Fix accessibility warnings, check for guidance on range input
  - Make origin customisable
  - Error handling if no tracks are streamable
- - BUG: Double click play button
- - BUG: Jumpy range slider when playing new track
  -->

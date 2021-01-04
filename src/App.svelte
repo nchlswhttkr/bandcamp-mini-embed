@@ -25,6 +25,7 @@
     if (audio !== undefined) {
       if (currentTrack !== undefined) {
         audio.src = tracks[currentTrack].file["mp3-128"];
+        audio.play();
       }
     }
   }
@@ -82,6 +83,7 @@
     } else if (currentTrack === trackIndex) {
       audio.play();
     } else {
+      currentTime = 0;
       currentTrack = trackIndex;
     }
   }
@@ -207,8 +209,7 @@
   bind:this={audio}
   bind:paused
   bind:currentTime
-  on:ended={() => play(nextTrack)}
-  autoplay="on" />
+  on:ended={() => play(nextTrack)} />
 <div class="bandcamp-mini-embed">
   {#await load()}
     <p>Loading...</p>
