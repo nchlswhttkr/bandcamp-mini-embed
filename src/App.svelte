@@ -160,7 +160,7 @@
     overflow: hidden;
   }
   .info p {
-    margin: 0 8px 0 14px;
+    margin: 0 8px 0 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
