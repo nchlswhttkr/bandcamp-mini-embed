@@ -55,26 +55,36 @@
         seekingNextTrack < tracks.length ? seekingNextTrack : undefined;
     }
   }
+  $: {
+    // Since we don't know the album's main artist, treating the current
+    // artist as the album artist and change with each track
+    if (tracks === undefined) {
+      artist = undefined;
+    } else if (currentTrack === undefined) {
+      artist = tracks[startingTrack].artist;
+    } else {
+      artist = tracks[currentTrack].artist;
+    }
+  }
 
   async function load() {
     const response = await fetch(
       "https://bandcamp-embed-cors-proxy.nchlswhttkr.workers.dev/?album=" +
         albumId
     )
-      .then(r => {
+      .then((r) => {
         if (r.status !== 200) {
           throw new Error("Failed to load album");
         }
         return r.text();
       })
-      .then(text => JSON.parse(text.match(/playerdata = (.*);/)[1]));
+      .then((text) => JSON.parse(text.match(/playerdata = (.*);/)[1]));
     artwork = response.album_art;
-    artist = response.artist;
     album = response.album_title;
     albumUrl = response.linkback + "?from=embed";
     tracks = response.tracks;
     startingTrack =
-      tracks.findIndex(track => track.id === response.featured_track_id) || 0;
+      tracks.findIndex((track) => track.id === response.featured_track_id) || 0;
   }
 
   function play(trackIndex) {
@@ -189,22 +199,45 @@
     flex-grow: 0;
   }
 
-  /* Links along bottom, Bandcamp logo to far right */
   .links {
     box-sizing: border-box;
-    padding: 8px 0 8px 8px;
     display: flex;
+    padding: 8px 0;
     align-items: center;
+    justify-content: right;
   }
-  .links > * {
-    margin-right: 16px;
-  }
-  .links > .spacer {
-    flex-grow: 1;
+  .links > *:first-child {
+    margin-right: 8px; /* fix space between buy/share links */
   }
   .links > *:last-child {
     line-height: 0;
-    margin-right: 0;
+  }
+
+  .tracks {
+    margin: 0;
+    padding: 8px 0 0;
+  }
+  .tracks > * {
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0px 12px;
+    padding: 8px 8px;
+    list-style-type: none;
+    border-bottom: 1px solid #bbb;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tracks > .now-playing {
+    background-color: #eee;
+    font-weight: 700;
+  }
+  .tracks > .unstreamable {
+    cursor: default;
+    color: #bbb;
+  }
+  .tracks span {
+    font-family: monospace;
   }
 </style>
 
@@ -214,9 +247,7 @@
   bind:currentTime
   on:ended={() => play(nextTrack)} />
 <div class="bandcamp-mini-embed">
-  {#await load()}
-    <p>Loading...</p>
-  {:then _}
+  {#await load() then _}
     <div class="player">
       <img
         height="120"
@@ -224,7 +255,7 @@
         class="artwork"
         on:click={toggle}
         src={artwork}
-        alt="Cover artwork for {album}, by {artist}" />
+        alt="Cover artwork for {album}" />
       <div class="info">
         <a href={albumUrl}>
           <p>
@@ -266,15 +297,33 @@
         </div>
       </div>
     </div>
+    <ul class="tracks">
+      {#each tracks as track, i}
+        <li
+          class:now-playing={i === currentTrack}
+          class:unstreamable={!tracks[i].track_streaming}
+          on:click={() => tracks[i].track_streaming && play(i)}>
+          <span>
+            {Math.floor(track.duration / 60)
+              .toString()
+              .padStart(2, ' ')}:{Math.floor(track.duration % 60)
+              .toString()
+              .padStart(2, '0')}
+          </span>
+          {'  ' + track.title}
+          {#if track.artist !== artist}– {track.artist}{/if}
+        </li>
+      {/each}
+    </ul>
     <div class="links">
       <a href={`${albumUrl}&action=buy`}>buy</a>
+      &nbsp;
       <a href={`${albumUrl}&action=share`}>share</a>
-      <div class="spacer" />
       <a href={albumUrl}>
         <img height="32" width="110" src={bandcampLogo} alt="Bandcamp logo" />
       </a>
     </div>
   {:catch error}
-    <p style="color: red">{error}</p>
+    <p style="color: red; margin: 16px;">{error}</p>
   {/await}
 </div>

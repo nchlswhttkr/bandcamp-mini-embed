@@ -17,7 +17,6 @@ TODO
  - Handling play suspending (waiting)
  - Document that player doesn't seem to play nice with constructor API
  - Check compatability with audio/source elements, console errors
- - List tracks in albums, allow streamble songs to be selected
  - Fix accessibility warnings, check for guidance on range input
  - Make origin customisable
  - Error handling if no tracks are streamable
