@@ -1,5 +1,6 @@
 <script>
   export let albumId;
+  export let proxyRoot;
 
   import bandcampLogo from "./icons/bandcamp-logotype-color.png";
   import playIcon from "./icons/play.svg";
@@ -68,10 +69,7 @@
   }
 
   async function load() {
-    const response = await fetch(
-      "https://bandcamp-embed-cors-proxy.nchlswhttkr.workers.dev/?album=" +
-        albumId
-    )
+    const response = await fetch(`${proxyRoot}?album=${albumId}`)
       .then((r) => {
         if (r.status !== 200) {
           throw new Error("Failed to load album");
@@ -147,7 +145,10 @@
 
   .bandcamp-mini-embed {
     font-family: sans-serif;
+    width: 100%;
     max-width: 480px;
+    box-sizing: border-box;
+    height: 336px;
     border: 1px solid #bbb;
   }
   a {
@@ -200,11 +201,10 @@
   }
 
   .links {
-    box-sizing: border-box;
+    height: 46px;
     display: flex;
-    padding: 8px 0;
     align-items: center;
-    justify-content: right;
+    justify-content: flex-end;
   }
   .links > *:first-child {
     margin-right: 8px; /* fix space between buy/share links */
@@ -214,8 +214,10 @@
   }
 
   .tracks {
-    margin: 0;
-    padding: 8px 0 0;
+    margin: 8px 0 0;
+    padding: 0;
+    height: 160px;
+    overflow-y: scroll;
   }
   .tracks > * {
     font-size: 12px;
@@ -241,6 +243,7 @@
   }
 </style>
 
+<!-- svelte-ignore a11y-media-has-caption -->
 <audio
   bind:this={audio}
   bind:paused

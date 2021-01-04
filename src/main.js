@@ -2,10 +2,10 @@ import App from "./App.svelte";
 
 {
   const albumId = document.currentScript.getAttribute("data-album-id");
-  const target = document.currentScript.getAttribute("data-target");
+  const proxyRoot = document.currentScript.getAttribute("data-proxy-root");
 
   const app = new App({
-    target: document.getElementById(target),
-    props: { albumId },
+    target: document.currentScript.previousElementSibling,
+    props: { albumId, proxyRoot },
   });
 }
