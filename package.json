@@ -1,5 +1,5 @@
 {
-  "name": "svelte-app",
+  "name": "bandcamp-mini-embed",
   "description": "A small Svelte client for embedding albums from Bandcamp into your site",
   "license": "MIT",
   "version": "1.0.0",
@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-image": "^2.0.6",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
