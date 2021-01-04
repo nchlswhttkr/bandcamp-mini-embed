@@ -152,7 +152,7 @@
 
   .info {
     flex-shrink: 1;
-    padding: 8px 0 0;
+    padding: 12px 0 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -160,10 +160,13 @@
     overflow: hidden;
   }
   .info p {
-    margin: 0 8px;
+    margin: 0 8px 0 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .info > p:last-of-type {
+    font-style: italic;
   }
 
   .controls {
