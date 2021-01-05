@@ -4,6 +4,7 @@ A small Svelte client for embedding albums from Bandcamp into your site.
 
 - Handles compilation albums and albums with limited preview tracks
 - Embed multiple albums in a single page without conflicts
+- Embedded albums only load when scrolled into view
 
 Does this count as a microfrontend?
 
