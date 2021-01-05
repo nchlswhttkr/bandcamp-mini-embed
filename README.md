@@ -14,7 +14,7 @@ Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Other icons belon
 
 ## Development
 
-If you'd like to try this out, you can clone and run this project locally.
+If you'd like to try this out, you can clone this project and run it locally.
 
 ```sh
 npm ci
@@ -22,42 +22,6 @@ npm run dev
 ```
 
 ## Usage
-
-Before you add the snippet to your site, you'll need a proxy to workaround CORS errors from Bandcamp. Here's an example Cloudflare worker that applies the necessary headers.
-
-> :exclamation: This isn't quite production-ready, use at your own risk.
-
-```js
-addEventListener("fetch", (event) => {
-  event.respondWith(handleRequest(event));
-});
-
-async function handleRequest(event) {
-  try {
-    const url = new URL(event.request.url);
-    const album = url.searchParams.get("album");
-    const clientIP = event.request.headers.get("CF-Connecting-IP");
-    const origin = event.request.headers.get("Origin");
-    const referer = event.request.headers.get("Referer");
-    const request = new Request(
-      `https://bandcamp.com/EmbeddedPlayer/ref=${encodeURIComponent(
-        referer
-      )}/album=${album}`,
-      event.request
-    );
-    request.headers.set("X-Forwarded-For", clientIP);
-    request.headers.set("Forwarded", `for=${clientIP}`);
-    let response = await fetch(request);
-    response = new Response(response.body, response);
-    response.headers.append("Access-Control-Allow-Origin", origin);
-    return response;
-  } catch (error) {
-    return new Response(error, { status: 500 });
-  }
-}
-```
-
-Note down the URL of your worker (like `https://bandcamp-embed-cors-proxy.nchlswhttkr.workers.dev/`), you'll need this later.
 
 Clone, build, and copy build output over to your website.
 
@@ -69,7 +33,9 @@ npm build
 cp -R public/build /path/to/website/bandcamp-mini-embed
 ```
 
-You'll need to know the ID of the album you're embedding in advance. You can find it at the bottom of the document for an album's page, or through the share/embed dialog. For example, here's the album ID for [Realign](https://vine.bandcamp.com/album/realign).
+In production, you'll need a proxy to workaround CORS errors with Bandcamp. You should deploy this yourself, but feel free to use [my code](https://github.com/nchlswhttkr/workers/blob/HEAD/workers/bandcamp-embed-cors-proxy/index.js) a basis for this. Keep a note of this proxy, you'll need it later.
+
+You'll also need to know the ID of the album you're embedding in advance. You can find it at the bottom of the document for an album's page, or through the share/embed dialog. For example, here's the album ID for [Realign](https://vine.bandcamp.com/album/realign).
 
 ```html
   </body>
