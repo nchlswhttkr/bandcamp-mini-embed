@@ -170,7 +170,8 @@
   }
 
   .info {
-    flex-shrink: 1;
+    flex: 1 1 0;
+    min-width: 198px;
     padding: 12px 0 0;
     width: 100%;
     display: flex;
@@ -205,7 +206,10 @@
 
   .artwork {
     cursor: pointer;
-    flex-grow: 0;
+    min-width: 80px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
   }
 
   .links {
@@ -261,13 +265,14 @@
 <div class="bandcamp-mini-embed">
   {#await load() then _}
     <div class="player">
-      <img
-        height="120"
-        width="120"
-        class="artwork"
-        on:click={toggle}
-        src={artwork}
-        alt="Cover artwork for {album}" />
+      <div class="artwork">
+        <img
+          height="120"
+          width="120"
+          on:click={toggle}
+          src={artwork}
+          alt="Cover artwork for {album}" />
+      </div>
       <div class="info">
         <a href={albumUrl}>
           <p>

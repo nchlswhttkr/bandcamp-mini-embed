@@ -78,7 +78,7 @@ You'll need to know the ID of the album you're embedding in advance. You can fin
 <!-- album id 2288090894 -->
 ```
 
-Insert the follow style/script snippet on any page you want. It's 336px tall and its width can vary between 320px and 480px.
+Insert the follow style/script snippet on any page you want. It's 336px tall and requires a minimum width of 280px.
 
 Specify the album to load with the `data-album-id` attribute on the script, as well as the URL of your CORS proxy from earlier with the `data-proxy-root` attribute.
 
