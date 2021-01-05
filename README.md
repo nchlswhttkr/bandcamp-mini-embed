@@ -23,13 +23,13 @@ npm run dev
 
 ## Usage
 
-Clone, build, and copy build output over to your website.
+Clone, build, and copy build output over to a path on your website (like `/bandcamp-mini-embed/...`).
 
 ```
 git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
 npm ci
-npm build
+npm run build
 cp -R public/build /path/to/website/bandcamp-mini-embed
 ```
 
