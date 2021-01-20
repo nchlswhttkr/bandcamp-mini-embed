@@ -134,8 +134,118 @@
   }
 </script>
 
+<!-- svelte-ignore a11y-media-has-caption -->
+<audio
+  id={`bandcamp-audio-${albumId}`}
+  bind:this={audio}
+  bind:paused
+  bind:currentTime
+  on:ended={() => play(nextTrack)}
+/>
+<div class="root">
+  {#await load() then _}
+    <div class="player">
+      <div class="artwork">
+        <img on:click={toggle} src={artwork} alt="Cover artwork for {album}" />
+      </div>
+      <div class="info">
+        <a href={albumUrl}>
+          <p>
+            {tracks[currentTrack === undefined ? startingTrack : currentTrack]
+              .title}
+          </p>
+        </a>
+        <p>
+          {tracks[currentTrack === undefined ? startingTrack : currentTrack]
+            .artist}
+        </p>
+        <p>{album}</p>
+        <div class="controls">
+          {#if paused || currentTrack === undefined}
+            <button
+              on:click={() =>
+                play(
+                  currentTrack === undefined ? startingTrack : currentTrack
+                )}>
+              {@html playIcon}
+            </button>
+          {:else}
+            <button on:click={pause}>
+              {@html pauseIcon}
+            </button>
+          {/if}
+          <input
+            type="range"
+            min="0"
+            max={currentTrack === undefined
+              ? undefined
+              : Math.floor(tracks[currentTrack].duration)}
+            value={(seekingTime === undefined ? currentTime : seekingTime) || 0}
+            on:change={handleSeeking}
+            on:input={handleSeeking}
+          />
+          <button
+            on:click={() => play(previousTrack)}
+            disabled={previousTrack === undefined}>
+            {@html previousIcon}
+          </button>
+          <button
+            on:click={() => play(nextTrack)}
+            disabled={nextTrack === undefined}>
+            {@html nextIcon}
+          </button>
+        </div>
+      </div>
+    </div>
+    <ul class="tracks">
+      {#each tracks as track, i}
+        <li
+          class:now-playing={i === currentTrack}
+          class:unstreamable={!tracks[i].track_streaming}
+          on:click={() => tracks[i].track_streaming && play(i)}
+        >
+          <span>
+            {Math.floor(track.duration / 60)
+              .toString()
+              .padStart(2, " ")}:{Math.floor(track.duration % 60)
+              .toString()
+              .padStart(2, "0")}
+          </span>
+          {"  " + track.title}
+          {#if track.artist !== artist}– {track.artist}{/if}
+        </li>
+      {/each}
+    </ul>
+    <div class="links">
+      <a href={`${albumUrl}&action=buy`}>buy</a>
+      &nbsp;
+      <a href={`${albumUrl}&action=share`}>share</a>
+      <a class="logo" href={albumUrl}>
+        <img src={bandcampLogo} alt="Bandcamp logo" />
+      </a>
+    </div>
+  {:catch error}
+    <p style="color: red; margin: 16px;">{error}</p>
+  {/await}
+</div>
+
 <style>
+  .root {
+    all: revert;
+    font-family: sans-serif;
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+    height: 336px;
+    border: 1px solid #bbb;
+  }
+  /* This interferes the SVGs inside buttons, ignore them */
+  .root :global(*):not(button *) {
+    all: revert;
+  }
+
   button {
+    cursor: pointer;
     color: #555;
     border: none;
     background-color: #fff;
@@ -143,21 +253,11 @@
     line-height: 0;
   }
   button:hover {
-    cursor: pointer;
     color: #111;
   }
   button:disabled {
     cursor: auto;
     color: #bbb;
-  }
-
-  .bandcamp-mini-embed {
-    font-family: sans-serif;
-    width: 100%;
-    max-width: 480px;
-    box-sizing: border-box;
-    height: 336px;
-    border: 1px solid #bbb;
   }
   a {
     color: #61929c;
@@ -200,12 +300,18 @@
     padding-left: 8px; /* keep space between play button/artwork interactive */
   }
   .controls > input {
+    cursor: grab;
     flex-grow: 1;
     width: 0; /* force smaller width on Firefox */
+  }
+  .controls > input:active {
+    cursor: grabbing;
   }
 
   .artwork {
     cursor: pointer;
+    height: 120px;
+    width: 120px;
     min-width: 80px;
     display: flex;
     justify-content: center;
@@ -221,8 +327,12 @@
   .links > *:first-child {
     margin-right: 8px; /* fix space between buy/share links */
   }
-  .links > *:last-child {
+  .links > .logo {
     line-height: 0;
+  }
+  .links > .logo > img {
+    height: 32px;
+    width: 110px;
   }
 
   .tracks {
@@ -254,93 +364,3 @@
     font-family: monospace;
   }
 </style>
-
-<!-- svelte-ignore a11y-media-has-caption -->
-<audio
-  id={`bandcamp-audio-${albumId}`}
-  bind:this={audio}
-  bind:paused
-  bind:currentTime
-  on:ended={() => play(nextTrack)} />
-<div class="bandcamp-mini-embed">
-  {#await load() then _}
-    <div class="player">
-      <div class="artwork">
-        <img
-          height="120"
-          width="120"
-          on:click={toggle}
-          src={artwork}
-          alt="Cover artwork for {album}" />
-      </div>
-      <div class="info">
-        <a href={albumUrl}>
-          <p>
-            {tracks[currentTrack === undefined ? startingTrack : currentTrack].title}
-          </p>
-        </a>
-        <p>
-          {tracks[currentTrack === undefined ? startingTrack : currentTrack].artist}
-        </p>
-        <p>{album}</p>
-        <div class="controls">
-          {#if paused || currentTrack === undefined}
-            <button
-              on:click={() => play(currentTrack === undefined ? startingTrack : currentTrack)}>
-              {@html playIcon}
-            </button>
-          {:else}
-            <button on:click={pause}>
-              {@html pauseIcon}
-            </button>
-          {/if}
-          <input
-            type="range"
-            min="0"
-            max={currentTrack === undefined ? undefined : Math.floor(tracks[currentTrack].duration)}
-            value={(seekingTime === undefined ? currentTime : seekingTime) || 0}
-            on:change={handleSeeking}
-            on:input={handleSeeking} />
-          <button
-            on:click={() => play(previousTrack)}
-            disabled={previousTrack === undefined}>
-            {@html previousIcon}
-          </button>
-          <button
-            on:click={() => play(nextTrack)}
-            disabled={nextTrack === undefined}>
-            {@html nextIcon}
-          </button>
-        </div>
-      </div>
-    </div>
-    <ul class="tracks">
-      {#each tracks as track, i}
-        <li
-          class:now-playing={i === currentTrack}
-          class:unstreamable={!tracks[i].track_streaming}
-          on:click={() => tracks[i].track_streaming && play(i)}>
-          <span>
-            {Math.floor(track.duration / 60)
-              .toString()
-              .padStart(2, ' ')}:{Math.floor(track.duration % 60)
-              .toString()
-              .padStart(2, '0')}
-          </span>
-          {'  ' + track.title}
-          {#if track.artist !== artist}– {track.artist}{/if}
-        </li>
-      {/each}
-    </ul>
-    <div class="links">
-      <a href={`${albumUrl}&action=buy`}>buy</a>
-      &nbsp;
-      <a href={`${albumUrl}&action=share`}>share</a>
-      <a href={albumUrl}>
-        <img height="32" width="110" src={bandcampLogo} alt="Bandcamp logo" />
-      </a>
-    </div>
-  {:catch error}
-    <p style="color: red; margin: 16px;">{error}</p>
-  {/await}
-</div>

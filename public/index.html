@@ -12,6 +12,15 @@
       body > div {
         margin: 8px;
       }
+
+      /* Test 'all: revert' works by applying ugly styles */
+      /* These changes should not be visible */
+      .root *:not(button *) {
+        border: 1px solid red;
+        color: red;
+        display: inline;
+        width: 10px;
+      }
     </style>
   </head>
 
