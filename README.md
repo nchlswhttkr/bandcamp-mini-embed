@@ -78,4 +78,6 @@ TODO
  - Error handling if no tracks are streamable
  - Remove/resolve workaround with inconsistent seeking on Firefox
  - Fix keyboard navigation, disabled elements
+ - Fix album artwork appearing distorted on Safari (specify img width)
+ - Make player icons look nicer in dark mode
  -->
