@@ -1,6 +1,8 @@
 <script>
   export let albumId;
   export let proxyRoot;
+  export let fallbackText;
+  export let fallbackUrl;
 
   import bandcampLogo from "./icons/bandcamp-logotype-color.png";
   import playIcon from "./icons/play.svg";
@@ -69,20 +71,26 @@
   }
 
   async function load() {
-    const response = await fetch(`${proxyRoot}?album=${albumId}`)
-      .then((r) => {
-        if (r.status !== 200) {
-          throw new Error("Failed to load album");
+    try {
+      const response = await fetch(`${proxyRoot}?album=${albumId}`).then(
+        async (r) => {
+          if (r.status !== 200) {
+            throw new Error(await r.text());
+          }
+          return r.json();
         }
-        return r.text();
-      })
-      .then((text) => JSON.parse(text.match(/playerdata = (.*);/)[1]));
-    artwork = response.album_art;
-    album = response.album_title;
-    albumUrl = response.linkback + "?from=embed";
-    tracks = response.tracks;
-    startingTrack =
-      tracks.findIndex((track) => track.id === response.featured_track_id) || 0;
+      );
+      artwork = response.album_art;
+      album = response.album_title;
+      albumUrl = response.linkback + "?from=embed";
+      tracks = response.tracks;
+      startingTrack =
+        tracks.findIndex((track) => track.id === response.featured_track_id) ||
+        0;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   function play(trackIndex) {
@@ -164,9 +172,8 @@
           {#if paused || currentTrack === undefined}
             <button
               on:click={() =>
-                play(
-                  currentTrack === undefined ? startingTrack : currentTrack
-                )}>
+                play(currentTrack === undefined ? startingTrack : currentTrack)}
+            >
               {@html playIcon}
             </button>
           {:else}
@@ -186,12 +193,14 @@
           />
           <button
             on:click={() => play(previousTrack)}
-            disabled={previousTrack === undefined}>
+            disabled={previousTrack === undefined}
+          >
             {@html previousIcon}
           </button>
           <button
             on:click={() => play(nextTrack)}
-            disabled={nextTrack === undefined}>
+            disabled={nextTrack === undefined}
+          >
             {@html nextIcon}
           </button>
         </div>
@@ -224,8 +233,14 @@
         <img src={bandcampLogo} alt="Bandcamp logo" />
       </a>
     </div>
-  {:catch error}
-    <p style="color: red; margin: 16px;">{error}</p>
+  {:catch _}
+    {#if fallbackText && fallbackUrl}
+      <p style="margin: 16px;"><a href={fallbackUrl}>{fallbackText}</a></p>
+    {:else}
+      <p style="color: red; margin: 16px;">
+        An error occured and this Bandcamp album could not be loaded.
+      </p>
+    {/if}
   {/await}
 </div>
 
