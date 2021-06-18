@@ -159,15 +159,17 @@
       <div class="info">
         <a href={albumUrl}>
           <p>
-            {tracks[currentTrack === undefined ? startingTrack : currentTrack]
-              .title}
+            {@html tracks[
+              currentTrack === undefined ? startingTrack : currentTrack
+            ].title}
           </p>
         </a>
         <p>
-          {tracks[currentTrack === undefined ? startingTrack : currentTrack]
-            .artist}
+          {@html tracks[
+            currentTrack === undefined ? startingTrack : currentTrack
+          ].artist}
         </p>
-        <p>{album}</p>
+        <p>{@html album}</p>
         <div class="controls">
           {#if paused || currentTrack === undefined}
             <button
@@ -220,7 +222,7 @@
               .toString()
               .padStart(2, "0")}
           </span>
-          {"  " + track.title}
+          {@html "  " + track.title}
           {#if track.artist !== artist}– {track.artist}{/if}
         </li>
       {/each}
