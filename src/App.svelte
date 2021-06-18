@@ -158,13 +158,13 @@
         <img on:click={toggle} src={artwork} alt="Cover artwork for {album}" />
       </div>
       <div class="info">
-        <a href={albumUrl}>
-          <p>
+        <p>
+          <a href={albumUrl}>
             {@html tracks[
               currentTrack === undefined ? startingTrack : currentTrack
             ].title}
-          </p>
-        </a>
+          </a>
+        </p>
         <p>
           {@html tracks[
             currentTrack === undefined ? startingTrack : currentTrack
@@ -174,17 +174,19 @@
         <div class="controls">
           {#if paused || currentTrack === undefined}
             <button
+              aria-label="Play current song"
               on:click={() =>
                 play(currentTrack === undefined ? startingTrack : currentTrack)}
             >
               {@html playIcon}
             </button>
           {:else}
-            <button on:click={pause}>
+            <button aria-label="Pause current song" on:click={pause}>
               {@html pauseIcon}
             </button>
           {/if}
           <input
+            aria-label="Seek"
             type="range"
             min="0"
             max={currentTrack === undefined
@@ -195,12 +197,14 @@
             on:input={handleSeeking}
           />
           <button
+            aria-label="Play previous song"
             on:click={() => play(previousTrack)}
             disabled={previousTrack === undefined}
           >
             {@html previousIcon}
           </button>
           <button
+            aria-label="Play next song"
             on:click={() => play(nextTrack)}
             disabled={nextTrack === undefined}
           >
@@ -212,9 +216,16 @@
     <ul class="tracks">
       {#each tracks as track, i}
         <li
+          tabindex={tracks[i].track_streaming ? 0 : -1}
           class:now-playing={i === currentTrack}
           class:unstreamable={!tracks[i].track_streaming}
           on:click={() => tracks[i].track_streaming && play(i)}
+          on:keydown={(e) => {
+            if (tracks[i].track_streaming && e.key === " ") {
+              e.preventDefault();
+              play(i);
+            }
+          }}
         >
           <span>
             {Math.floor(track.duration / 60)
@@ -285,7 +296,8 @@
     opacity: 0.5;
   }
   a {
-    color: #61929c;
+    color: #537d86;
+    text-decoration: underline;
     font-weight: 700;
   }
   @media (prefers-color-scheme: dark) {

@@ -10,7 +10,7 @@ Does this count as a microfrontend?
 
 ![Three music players sit side by side - each player shows an album cover, details about the current song, music controls, and a list of tracks](./screenshot.png)
 
-Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Other icons belong to [Feather](https://feathericons.com/).
+Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [Feather](https://feathericons.com/).
 
 ## Development
 
