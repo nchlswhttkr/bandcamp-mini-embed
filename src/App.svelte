@@ -257,7 +257,7 @@
     border: 1px solid #bbb;
   }
   /* This interferes the SVGs inside buttons, ignore them */
-  .root :global(*):not(button *) {
+  .root :global(:not(button *)) {
     all: revert;
   }
 
