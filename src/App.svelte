@@ -4,7 +4,8 @@
   export let fallbackText;
   export let fallbackUrl;
 
-  import bandcampLogo from "./icons/bandcamp-logotype-color.png";
+  import bandcampLogoColor from "./icons/bandcamp-logotype-color.png";
+  import bandcampLogoWhite from "./icons/bandcamp-logotype-white.png";
   import playIcon from "./icons/play.svg";
   import pauseIcon from "./icons/pause.svg";
   import previousIcon from "./icons/previous.svg";
@@ -232,7 +233,13 @@
       &nbsp;
       <a href={`${albumUrl}&action=share`}>share</a>
       <a class="logo" href={albumUrl}>
-        <img src={bandcampLogo} alt="Bandcamp logo" />
+        <picture>
+          <source
+            srcset={bandcampLogoWhite}
+            media="(prefers-color-scheme: dark)"
+          />
+          <img src={bandcampLogoColor} alt="Bandcamp logo" />
+        </picture>
       </a>
     </div>
   {:catch _}
@@ -263,22 +270,28 @@
 
   button {
     cursor: pointer;
-    color: #555;
+    opacity: 0.8;
+    color: inherit;
     border: none;
-    background-color: #fff;
+    background-color: unset;
     padding: 4px;
     line-height: 0;
   }
   button:hover {
-    color: #111;
+    opacity: 1;
   }
   button:disabled {
     cursor: auto;
-    color: #bbb;
+    opacity: 0.5;
   }
   a {
     color: #61929c;
     font-weight: 700;
+  }
+  @media (prefers-color-scheme: dark) {
+    a {
+      color: inherit;
+    }
   }
 
   .player {
@@ -347,7 +360,7 @@
   .links > .logo {
     line-height: 0;
   }
-  .links > .logo > img {
+  .links > .logo > picture > img {
     height: 32px;
     width: 110px;
   }
@@ -370,12 +383,11 @@
     text-overflow: ellipsis;
   }
   .tracks > .now-playing {
-    background-color: #eee;
     font-weight: 700;
   }
   .tracks > .unstreamable {
     cursor: default;
-    color: #bbb;
+    opacity: 0.5;
   }
   .tracks span {
     font-family: monospace;
