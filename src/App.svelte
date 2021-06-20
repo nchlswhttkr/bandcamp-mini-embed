@@ -387,7 +387,7 @@
     font-size: 12px;
     cursor: pointer;
     margin: 0px 12px;
-    padding: 8px 8px;
+    padding: 10px 8px;
     list-style-type: none;
     border-bottom: 1px solid #bbb;
     white-space: pre;
