@@ -4,12 +4,12 @@
   export let fallbackText;
   export let fallbackUrl;
 
-  import bandcampLogoColor from "./icons/bandcamp-logotype-color.png";
-  import bandcampLogoWhite from "./icons/bandcamp-logotype-white.png";
   import playIcon from "./icons/play.svg";
   import pauseIcon from "./icons/pause.svg";
   import previousIcon from "./icons/previous.svg";
   import nextIcon from "./icons/next.svg";
+
+  import Links from "./Links.svelte";
 
   let tracks;
   let startingTrack;
@@ -239,20 +239,7 @@
         </li>
       {/each}
     </ul>
-    <div class="links">
-      <a href={`${albumUrl}&action=buy`}>buy</a>
-      &nbsp;
-      <a href={`${albumUrl}&action=share`}>share</a>
-      <a class="logo" href={albumUrl}>
-        <picture>
-          <source
-            srcset={bandcampLogoWhite}
-            media="(prefers-color-scheme: dark)"
-          />
-          <img src={bandcampLogoColor} alt="Bandcamp logo" />
-        </picture>
-      </a>
-    </div>
+    <Links {albumUrl} />
   {:catch _}
     {#if fallbackText && fallbackUrl}
       <p style="margin: 16px;"><a href={fallbackUrl}>{fallbackText}</a></p>
@@ -358,23 +345,6 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
-  }
-
-  .links {
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-  .links > *:first-child {
-    margin-right: 8px; /* fix space between buy/share links */
-  }
-  .links > .logo {
-    line-height: 0;
-  }
-  .links > .logo > picture > img {
-    height: 32px;
-    width: 110px;
   }
 
   .tracks {
