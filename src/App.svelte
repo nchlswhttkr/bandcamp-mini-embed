@@ -100,29 +100,6 @@
     audio.pause();
   }
 
-  function toggle() {
-    if (paused) {
-      play(currentTrack);
-    } else {
-      pause();
-    }
-  }
-
-  let seekingTime;
-  function handleSeeking(event) {
-    switch (event.type) {
-      case "change":
-        seek(event.target.value);
-        seekingTime = undefined;
-        break;
-      case "input":
-        seekingTime = event.target.value;
-        break;
-      default:
-        break;
-    }
-  }
-
   function seek(time) {
     // Seeking via currentTime is inconsistent in Firefox, seems to be a
     // regression of https://github.com/sveltejs/svelte/issues/3524
@@ -143,7 +120,6 @@
 <div class="root">
   {#await load() then _}
     <Player
-      {toggle}
       {artwork}
       {album}
       {albumUrl}
@@ -152,9 +128,8 @@
       paused={paused || /* unloaded audio shows as playing */ audio.src === ""}
       {play}
       {pause}
-      {seekingTime}
+      {seek}
       {currentTime}
-      {handleSeeking}
       {previousTrack}
       {nextTrack}
     />
