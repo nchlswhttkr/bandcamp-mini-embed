@@ -12,7 +12,6 @@
   let previousTrack;
   let currentTrack;
   let nextTrack;
-  let artist;
   let album;
   let albumUrl;
   let artwork;
@@ -48,17 +47,6 @@
       } else {
         nextTrack = undefined;
       }
-    }
-  }
-  $: {
-    // Since we don't know the album's main artist, treating the current
-    // artist as the album artist and change with each track
-    if (tracks === undefined) {
-      artist = undefined;
-    } else if (currentTrack === undefined) {
-      artist = tracks[startingTrack].artist;
-    } else {
-      artist = tracks[currentTrack].artist;
     }
   }
 
@@ -133,7 +121,7 @@
       {previousTrack}
       {nextTrack}
     />
-    <Tracklist {tracks} {currentTrack} {play} {artist} />
+    <Tracklist {tracks} {currentTrack} {play} />
     <Links {albumUrl} />
   {:catch _}
     {#if fallbackText && fallbackUrl}

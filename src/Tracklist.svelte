@@ -2,7 +2,8 @@
   export let tracks;
   export let currentTrack;
   export let play;
-  export let artist;
+
+  $: artist = tracks[currentTrack].artist;
 </script>
 
 <ul class="tracks">
