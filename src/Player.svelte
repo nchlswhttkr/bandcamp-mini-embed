@@ -1,5 +1,4 @@
 <script>
-  export let toggle;
   export let artwork;
   export let album;
   export let albumUrl;
@@ -8,9 +7,8 @@
   export let paused;
   export let play;
   export let pause;
-  export let seekingTime;
+  export let seek;
   export let currentTime;
-  export let handleSeeking;
   export let previousTrack;
   export let nextTrack;
 
@@ -18,6 +16,29 @@
   import pauseIcon from "./icons/pause.svg";
   import previousIcon from "./icons/previous.svg";
   import nextIcon from "./icons/next.svg";
+
+  function toggle() {
+    if (paused) {
+      play(currentTrack);
+    } else {
+      pause();
+    }
+  }
+
+  let seekingTime;
+  function handleSeeking(event) {
+    switch (event.type) {
+      case "change":
+        seek(event.target.value);
+        seekingTime = undefined;
+        break;
+      case "input":
+        seekingTime = event.target.value;
+        break;
+      default:
+        break;
+    }
+  }
 </script>
 
 <div class="player">
