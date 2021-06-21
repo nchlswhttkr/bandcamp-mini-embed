@@ -9,7 +9,6 @@
   import Player from "./Player.svelte";
 
   let tracks;
-  let startingTrack;
   let previousTrack;
   let currentTrack;
   let nextTrack;
@@ -22,38 +21,33 @@
   let currentTime;
 
   $: {
-    // Update currently playing audio as track changes
-    if (audio !== undefined) {
-      if (currentTrack !== undefined) {
-        audio.src = tracks[currentTrack].file["mp3-128"];
-        audio.play();
-      }
-    }
-  }
-  $: {
     // Seek back/forwards to find the next streamable track (may not exist!)
     if (tracks !== undefined) {
-      let seekingPreviousTrack =
-        currentTrack === undefined ? startingTrack : currentTrack;
+      let seekingPreviousTrack = currentTrack;
       do {
         seekingPreviousTrack--;
       } while (
         seekingPreviousTrack >= 0 &&
         !tracks[seekingPreviousTrack].track_streaming
       );
-      previousTrack =
-        seekingPreviousTrack >= 0 ? seekingPreviousTrack : undefined;
+      if (seekingPreviousTrack >= 0) {
+        previousTrack = seekingPreviousTrack;
+      } else {
+        previousTrack = undefined;
+      }
 
-      let seekingNextTrack =
-        currentTrack === undefined ? startingTrack : currentTrack;
+      let seekingNextTrack = currentTrack;
       do {
         seekingNextTrack++;
       } while (
         seekingNextTrack < tracks.length &&
         !tracks[seekingNextTrack].track_streaming
       );
-      nextTrack =
-        seekingNextTrack < tracks.length ? seekingNextTrack : undefined;
+      if (seekingNextTrack < tracks.length) {
+        nextTrack = seekingNextTrack;
+      } else {
+        nextTrack = undefined;
+      }
     }
   }
   $: {
@@ -82,9 +76,8 @@
       album = response.album_title;
       albumUrl = response.linkback + "?from=embed";
       tracks = response.tracks;
-      startingTrack =
-        tracks.findIndex((track) => track.id === response.featured_track_id) ||
-        0;
+      currentTrack =
+        tracks.findIndex(({ id }) => id === response.featured_track_id) || 0;
     } catch (error) {
       console.error(error);
       throw error;
@@ -92,14 +85,15 @@
   }
 
   function play(trackIndex) {
-    if (trackIndex === undefined) {
-      // noop
-    } else if (currentTrack === trackIndex) {
-      audio.play();
-    } else {
+    if (trackIndex === undefined) return; // noop, occurs after last song
+
+    // Will start a new song if it's changed, or no song has played so far
+    if (currentTrack !== trackIndex || audio.src === "") {
       seek(0);
       currentTrack = trackIndex;
+      audio.src = tracks[currentTrack].file["mp3-128"];
     }
+    audio.play();
   }
 
   function pause() {
@@ -107,9 +101,7 @@
   }
 
   function toggle() {
-    if (currentTrack === undefined) {
-      play(startingTrack);
-    } else if (paused) {
+    if (paused) {
       play(currentTrack);
     } else {
       pause();
@@ -157,8 +149,7 @@
       {albumUrl}
       {tracks}
       {currentTrack}
-      {startingTrack}
-      {paused}
+      paused={paused || /* unloaded audio shows as playing */ audio.src === ""}
       {play}
       {pause}
       {seekingTime}

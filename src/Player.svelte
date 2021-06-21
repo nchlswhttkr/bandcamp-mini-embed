@@ -5,7 +5,6 @@
   export let albumUrl;
   export let tracks;
   export let currentTrack;
-  export let startingTrack;
   export let paused;
   export let play;
   export let pause;
@@ -28,21 +27,18 @@
   <div class="info">
     <p>
       <a href={albumUrl}>
-        {@html tracks[currentTrack === undefined ? startingTrack : currentTrack]
-          .title}
+        {@html tracks[currentTrack].title}
       </a>
     </p>
     <p>
-      {@html tracks[currentTrack === undefined ? startingTrack : currentTrack]
-        .artist}
+      {@html tracks[currentTrack].artist}
     </p>
     <p>{@html album}</p>
     <div class="controls">
-      {#if paused || currentTrack === undefined}
+      {#if paused}
         <button
           aria-label="Play current song"
-          on:click={() =>
-            play(currentTrack === undefined ? startingTrack : currentTrack)}
+          on:click={() => play(currentTrack)}
         >
           {@html playIcon}
         </button>
@@ -55,9 +51,7 @@
         aria-label="Seek"
         type="range"
         min="0"
-        max={currentTrack === undefined
-          ? undefined
-          : Math.floor(tracks[currentTrack].duration)}
+        max={Math.floor(tracks[currentTrack].duration)}
         value={(seekingTime === undefined ? currentTime : seekingTime) || 0}
         on:change={handleSeeking}
         on:input={handleSeeking}
