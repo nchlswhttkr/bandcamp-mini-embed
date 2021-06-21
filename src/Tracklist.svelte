@@ -14,7 +14,7 @@
       class:unstreamable={!tracks[i].track_streaming}
       on:click={() => tracks[i].track_streaming && play(i)}
       on:keydown={(e) => {
-        if (tracks[i].track_streaming && e.key === " ") {
+        if (tracks[i].track_streaming && (e.key === " " || e.key === "Enter")) {
           e.preventDefault();
           play(i);
         }
