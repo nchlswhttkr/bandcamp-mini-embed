@@ -18,17 +18,6 @@
 </div>
 
 <style>
-  a {
-    color: #537d86;
-    text-decoration: none;
-    font-weight: 700;
-  }
-  @media (prefers-color-scheme: dark) {
-    a {
-      color: inherit;
-    }
-  }
-
   .links {
     height: 46px;
     display: flex;

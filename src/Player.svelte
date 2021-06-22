@@ -112,16 +112,6 @@
     cursor: auto;
     opacity: 0.5;
   }
-  a {
-    color: #537d86;
-    text-decoration: underline;
-    font-weight: 700;
-  }
-  @media (prefers-color-scheme: dark) {
-    a {
-      color: inherit;
-    }
-  }
 
   .player {
     display: flex;
