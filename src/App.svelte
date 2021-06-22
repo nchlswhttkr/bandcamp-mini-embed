@@ -148,4 +148,15 @@
   .root :global(:not(button *)) {
     all: revert;
   }
+
+  .root :global(a) {
+    color: #537d86;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  @media (prefers-color-scheme: dark) {
+    .root :global(a) {
+      color: inherit;
+    }
+  }
 </style>
