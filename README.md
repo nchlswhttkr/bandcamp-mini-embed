@@ -35,33 +35,9 @@ npm run build
 vercel
 ```
 
-You'll need to know the ID of the album you're embedding in advance. You can find it at the bottom of the document for an album's page, or through the share/embed dialog. For example, here's the album ID for [Realign](https://vine.bandcamp.com/album/realign).
+Open your deployment, and enter the name of the album you'd like to embed into the form.
 
-```html
-  </body>
-</html>
-<!-- bender18-5 Mon Jan 04 11:00:00 UTC 2021  -->
-<!-- album id 2288090894 -->
-```
-
-Insert the follow style/script snippet on any page you want. It's 336px tall and requires a minimum width of 280px. You can specify the album to show using the `data-album-id` attribute on the script.
-
-```
-<head>
-    ...
-    <link rel="stylesheet" href="https://bandcamp-mini-embed.vercel.app/build/bundle.css" />
-    ...
-</head>
-<body>
-    ...
-    <div style="height: 336px"></div>
-    <script async
-        data-album-id="2288090894"
-        src="https://bandcamp-mini-embed.vercel.app/build/bundle.js"
-    ></script>
-    ...
-</body>
-```
+After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed your album.
 
 <!--
 TODO
