@@ -55,13 +55,13 @@ async function generateEmbed(url: string, origin: string) {
   title = matchTitle[1];
 
   return `<!-- bandcamp-mini-embed https://github.com/nchlswhttkr/bandcamp-mini-embed -->
-<link rel="stylesheet" href="${origin}/build/bundle.css"/>
+<link rel="stylesheet" href="${origin}/embed/bundle.css"/>
 <div class="bandcamp-mini-embed" style="height: 336px"></div>
 <script
     data-album-id="${albumId}"
     data-fallback-text="${title}"
     data-fallback-url="${url}"
-    src="${origin}/build/bundle.js"
+    src="${origin}/embed/bundle.js"
 ></script>
 <noscript>
     <a href="${url}">Listen to ${title} on Bandcamp</a>

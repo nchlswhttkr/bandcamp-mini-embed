@@ -1,4 +1,4 @@
 node_modules/
-/public/build/
+/public/embed/
 /dist/
 .vercel
