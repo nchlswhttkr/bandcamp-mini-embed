@@ -1,6 +1,6 @@
 <script>
   export let albumId;
-  export let proxyRoot;
+  export let origin;
   export let fallbackText;
   export let fallbackUrl;
 
@@ -52,7 +52,7 @@
 
   async function load() {
     try {
-      const response = await fetch(`${proxyRoot}?album=${albumId}`).then(
+      const response = await fetch(`${origin}/api/album-embed/${albumId}`).then(
         async (r) => {
           if (r.status !== 200) {
             throw new Error(await r.text());

@@ -2,10 +2,9 @@ import App from "./App.svelte";
 
 {
   const albumId = document.currentScript.getAttribute("data-album-id");
-  const proxyRoot = document.currentScript.getAttribute("data-proxy-root");
-  const fallbackText = document.currentScript.getAttribute(
-    "data-fallback-text"
-  );
+  const origin = new URL(document.currentScript.src).origin;
+  const fallbackText =
+    document.currentScript.getAttribute("data-fallback-text");
   const fallbackUrl = document.currentScript.getAttribute("data-fallback-url");
   const target = document.currentScript.previousElementSibling;
 
@@ -16,7 +15,7 @@ import App from "./App.svelte";
     observer.disconnect();
     new App({
       target,
-      props: { albumId, proxyRoot, fallbackText, fallbackUrl },
+      props: { albumId, origin, fallbackText, fallbackUrl },
     });
   }).observe(target);
 }

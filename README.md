@@ -14,28 +14,28 @@ Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [
 
 ## Development
 
-If you'd like to try this out, you can clone this project and run it locally.
+If you'd like to try this out, you can clone this project and run it locally. You'll need the [Vercel CLI](https://vercel.com/docs/cli) installed.
 
 ```sh
 npm ci
-npm run dev
+(cd api && npm ci)
+vercel dev
 ```
 
 ## Usage
 
-Clone, build, and copy build output over to a path on your website (like `/bandcamp-mini-embed/...`).
+Clone, build, and deploy the artifacts and serverless functions to Vercel.
 
 ```
 git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
 npm ci
+(cd api && npm ci)
 npm run build
-cp -R public/build /path/to/website/bandcamp-mini-embed
+vercel
 ```
 
-In production, you'll need a proxy to workaround CORS errors with Bandcamp. You should deploy this yourself, but feel free to use [my code](https://github.com/nchlswhttkr/workers/blob/HEAD/workers/bandcamp-embed-cors-proxy/index.js) a basis for this. Keep a note of this proxy, you'll need it later.
-
-You'll also need to know the ID of the album you're embedding in advance. You can find it at the bottom of the document for an album's page, or through the share/embed dialog. For example, here's the album ID for [Realign](https://vine.bandcamp.com/album/realign).
+You'll need to know the ID of the album you're embedding in advance. You can find it at the bottom of the document for an album's page, or through the share/embed dialog. For example, here's the album ID for [Realign](https://vine.bandcamp.com/album/realign).
 
 ```html
   </body>
@@ -44,14 +44,12 @@ You'll also need to know the ID of the album you're embedding in advance. You ca
 <!-- album id 2288090894 -->
 ```
 
-Insert the follow style/script snippet on any page you want. It's 336px tall and requires a minimum width of 280px.
-
-Specify the album to load with the `data-album-id` attribute on the script, as well as the URL of your CORS proxy from earlier with the `data-proxy-root` attribute.
+Insert the follow style/script snippet on any page you want. It's 336px tall and requires a minimum width of 280px. You can specify the album to show using the `data-album-id` attribute on the script.
 
 ```
 <head>
     ...
-    <link rel="stylesheet" href="/bandcamp-mini-embed/bundle.css" />
+    <link rel="stylesheet" href="https://bandcamp-mini-embed.vercel.app/build/bundle.css" />
     ...
 </head>
 <body>
@@ -59,8 +57,7 @@ Specify the album to load with the `data-album-id` attribute on the script, as w
     <div style="height: 336px"></div>
     <script async
         data-album-id="2288090894"
-        data-proxy-root="https://bandcamp-embed-cors-proxy.nchlswhttkr.workers.dev/"
-        src="/bandcamp-mini-embed/bundle.js"
+        src="https://bandcamp-mini-embed.vercel.app/build/bundle.js"
     ></script>
     ...
 </body>
