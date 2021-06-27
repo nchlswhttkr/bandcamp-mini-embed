@@ -1,6 +1,0 @@
-{
-    "dependencies": {
-        "@vercel/node": "^1.7.4",
-        "got": "^11.5.1"
-    }
-}

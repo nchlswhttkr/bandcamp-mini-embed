@@ -1,0 +1,3 @@
+name = "bandcamp-mini-embed"
+type = "webpack"
+workers_dev = true

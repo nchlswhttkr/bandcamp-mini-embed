@@ -52,14 +52,14 @@
 
   async function load() {
     try {
-      const response = await fetch(`${origin}/api/album-embed/${albumId}`).then(
-        async (r) => {
-          if (r.status !== 200) {
-            throw new Error(await r.text());
-          }
-          return r.json();
+      const response = await fetch(
+        `${origin}/embed-data?album=${encodeURIComponent(albumId)}`
+      ).then(async (r) => {
+        if (r.status !== 200) {
+          throw new Error(await r.text());
         }
-      );
+        return r.json();
+      });
       artwork = response.album_art;
       album = response.album_title;
       albumUrl = response.linkback + "?from=embed";

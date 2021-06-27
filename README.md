@@ -12,32 +12,33 @@ Does this count as a microfrontend?
 
 Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [Feather](https://feathericons.com/).
 
-## Development
-
-If you'd like to try this out, you can clone this project and run it locally. You'll need the [Vercel CLI](https://vercel.com/docs/cli) installed.
-
-```sh
-npm ci
-(cd api && npm ci)
-vercel dev
-```
-
 ## Usage
 
-Clone, build, and deploy the artifacts and serverless functions to Vercel.
+Build the player, and then package and deploy it to Cloudflare with the [Wrangler CLI](https://developers.cloudflare.com/workers/cli-wrangler).
 
-```
+```sh
 git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
 npm ci
-(cd api && npm ci)
 npm run build
-vercel
+wrangler publish
 ```
 
-Open your deployment, and enter the name of the album you'd like to embed into the form.
+From here you can open your deployment, and enter the name of the album you'd like to embed into the form.
 
 After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed your album.
+
+## Development
+
+To develop locally, you'll need to run development servers for the Svelte app _and_ the Cloudflare worker.
+
+```sh
+git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
+cd bandcamp-mini-embed
+npm ci
+npm run dev
+wrangler dev # in a separate window, or the background
+```
 
 <!--
 TODO
