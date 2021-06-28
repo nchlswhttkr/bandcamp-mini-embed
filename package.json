@@ -5,10 +5,14 @@
   "version": "1.0.0",
   "main": "worker.js",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "build:embed": "rollup -c",
+    "build:worker": "wrangler dev",
+    "dev:embed": "rollup -c -w",
+    "dev:worker": "wrangler build",
+    "deploy": "wrangler publish"
   },
   "dependencies": {
+    "@cloudflare/wrangler": "^1.17.0",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-image": "^2.0.6",
     "@rollup/plugin-node-resolve": "^13.0.0",
