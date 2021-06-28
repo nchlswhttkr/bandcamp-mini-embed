@@ -6,9 +6,9 @@
   "main": "worker.js",
   "scripts": {
     "build:embed": "rollup -c",
-    "build:worker": "wrangler dev",
+    "build:worker": "wrangler build",
     "dev:embed": "rollup -c -w",
-    "dev:worker": "wrangler build",
+    "dev:worker": "wrangler dev",
     "deploy": "wrangler publish"
   },
   "dependencies": {
