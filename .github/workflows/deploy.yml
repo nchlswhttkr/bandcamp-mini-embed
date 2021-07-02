@@ -1,6 +1,8 @@
-name: Build and deploy client
+name: Build and deploy to Cloudflare
 
-on: push
+on:
+  - push
+  - workflow_dispatch
 
 jobs:
   build:
