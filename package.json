@@ -3,23 +3,20 @@
   "description": "A small Svelte client for embedding albums from Bandcamp into your site",
   "license": "MIT",
   "version": "1.0.0",
-  "main": "worker.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build:embed": "rollup -c",
-    "build:worker": "wrangler build",
-    "dev:embed": "rollup -c -w",
-    "dev:worker": "wrangler dev",
-    "deploy": "wrangler publish"
+    "build": "rollup -c && esbuild src/worker/main.js --bundle --loader:.html=text --outfile=dist/main.js",
+    "dev": "wrangler dev",
+    "deploy": "NODE_ENV=production wrangler publish"
   },
   "dependencies": {
     "@cloudflare/wrangler": "^1.17.0",
-    "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-image": "^2.0.6",
     "@rollup/plugin-node-resolve": "^13.0.0",
+    "esbuild": "^0.12.14",
     "raw-loader": "^4.0.2",
     "rollup": "^2.52.1",
     "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.0",
     "svelte": "^3.38.0"

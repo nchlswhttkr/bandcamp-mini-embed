@@ -1,3 +1,7 @@
 name = "bandcamp-mini-embed"
-type = "webpack"
+type = "javascript"
 workers_dev = true
+
+[build]
+upload.format = "service-worker"
+command = "npm run build" 

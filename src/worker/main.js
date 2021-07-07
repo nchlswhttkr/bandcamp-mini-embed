@@ -9,31 +9,22 @@ async function handleRequest(event) {
     const { pathname } = new URL(event.request.url);
     switch (pathname) {
       case "/embed/bundle.js":
-        return new Response(
-          require("raw-loader!./public/embed/bundle.js").default,
-          {
-            status: 200,
-            headers: { "Content-Type": "application/javascript" },
-          }
-        );
+        return new Response(require("../../dist/embed/bundle.js.txt"), {
+          status: 200,
+          headers: { "Content-Type": "application/javascript" },
+        });
       case "/embed/bundle.css":
-        return new Response(
-          require("raw-loader!./public/embed/bundle.css").default,
-          {
-            status: 200,
-            headers: { "Content-Type": "text/css" },
-          }
-        );
+        return new Response(require("../../dist/embed/bundle.css.txt"), {
+          status: 200,
+          headers: { "Content-Type": "text/css" },
+        });
       case "/examples/":
-        return new Response(
-          require("raw-loader!./public/examples/index.html").default,
-          {
-            status: 200,
-            headers: { "Content-Type": "text/html" },
-          }
-        );
+        return new Response(require("./examples.html"), {
+          status: 200,
+          headers: { "Content-Type": "text/html" },
+        });
       case "/robots.txt":
-        return new Response(require("raw-loader!./public/robots.txt").default, {
+        return new Response(require("./robots.txt"), {
           status: 200,
           headers: { "Content-Type": "text/plain" },
         });
@@ -58,9 +49,6 @@ async function getEmbedData(event) {
     throw new Error("No album");
   }
   const clientIP = event.request.headers.get("CF-Connecting-IP");
-  if (clientIP === null) {
-    throw new Error("No client IP");
-  }
   const referrer = event.request.headers.get("Referer");
   if (referrer === null) {
     throw new Error("No referrer");
@@ -74,8 +62,10 @@ async function getEmbedData(event) {
     )}/album=${album}`,
     event.request
   );
-  request.headers.set("X-Forwarded-For", clientIP);
-  request.headers.set("Forwarded", `for=${clientIP}`);
+  if (clientIP !== null) {
+    request.headers.set("X-Forwarded-For", clientIP);
+    request.headers.set("Forwarded", `for=${clientIP}`);
+  }
   let data = await fetch(request)
     .then((response) => {
       if (response.status !== 200) {

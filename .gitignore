@@ -1,4 +1,3 @@
 node_modules/
-public/embed/
-worker/
+src/worker/embed/
 dist/
