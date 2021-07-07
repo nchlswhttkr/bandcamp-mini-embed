@@ -56,18 +56,12 @@
     </p>
     <p>{@html album}</p>
     <div class="controls">
-      {#if paused}
-        <button
-          aria-label="Play current song"
-          on:click={() => play(currentTrack)}
-        >
-          {@html playIcon}
-        </button>
-      {:else}
-        <button aria-label="Pause current song" on:click={pause}>
-          {@html pauseIcon}
-        </button>
-      {/if}
+      <button
+        aria-label={paused ? "Play current song" : "Pause current song"}
+        on:click={paused ? () => play(currentTrack) : pause}
+      >
+        {@html paused ? playIcon : pauseIcon}
+      </button>
       <input
         aria-label="Seek"
         type="range"
