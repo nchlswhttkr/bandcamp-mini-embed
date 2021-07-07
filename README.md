@@ -1,10 +1,11 @@
 # bandcamp-mini-embed
 
-A small Svelte client for embedding albums from Bandcamp into your site.
+A music player embed for Bandcamp albums
 
-- Handles compilation albums and albums with limited preview tracks
+- Can display compilation albums and albums with limited preview tracks
 - Embed multiple albums in a single page without conflicts
-- Embedded albums only load when scrolled into view
+- Lazy-loaded player, and no tracks are downloaded until you hit "Play"
+- Dark mode friendly, keyboard friendly, and compatible with system media controls
 
 Does this count as a microfrontend?
 
@@ -14,19 +15,22 @@ Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [
 
 ## Usage
 
-Build the player, and then package and deploy it to Cloudflare with the [Wrangler CLI](https://developers.cloudflare.com/workers/cli-wrangler).
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/nchlswhttkr/bandcamp-mini-embed)
 
-```sh
-git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
-cd bandcamp-mini-embed
-npm ci
-npm run build
-wrangler publish
-```
+To set up your own deployment, you follow the steps below or use button above.
 
-From here you can open your deployment, and enter the name of the album you'd like to embed into the form.
+1. [Fork this repository](https://github.com/nchlswhttkr/bandcamp-mini-embed/fork)
+1. Enable GitHub Actions in your fork from the **Actions** tab
+1. Add your `CF_ACCOUNT_ID` and `CF_API_TOKEN` repository secrets in the **Secrets** section of the **Settings** tab
+   - Your Cloudflare account ID can be copied from [the dashboard](https://dash.cloudflare.com/?to=/:account/workers/overview)
+   - You'll need to [create an API token](https://dash.cloudflare.com/profile/api-tokens) with the `Workers Script:Edit` permission
+1. From the **Actions** tab, select the **Build and deploy to Cloudflare** workflow and trigger a run on the `main` branch with the **Run workflow** button.
 
-After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed your album.
+From here you can open your deployment, and enter the URL of the Bandcamp album you'd like to embed into the form.
+
+After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed the album.
+
+![A preview embed, alongside a code block containing this embed's code](./generate-embed.png)
 
 ## Development
 
@@ -37,21 +41,18 @@ git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
 npm ci
 npm run dev
-wrangler dev # in a separate window, or the background
 ```
+
+Your changes will be reloaded on the fly, but you will need to reload the page to see them.
 
 <!--
 TODO
  - https://botany.bandcamp.com/track/fourteen-45-tails
  - Support tracks rather than only albums
- - Handling play suspending (waiting)
  - Document that player doesn't seem to play nice with constructor API
  - Check compatability with audio/source elements, fix console errors
  - Look for guidance on range input accessibility
- - Investigate dynamically generating/linking caption files
  - Error handling if no tracks are streamable
  - Remove/resolve workaround with inconsistent seeking on Firefox
- - Fix keyboard navigation, disabled elements
  - Fix album artwork appearing distorted on Safari (specify img width)
- - Make player icons look nicer in dark mode
  -->

@@ -1,6 +1,6 @@
 {
   "name": "bandcamp-mini-embed",
-  "description": "A small Svelte client for embedding albums from Bandcamp into your site",
+  "description": "A music player embed for Bandcamp albums",
   "license": "MIT",
   "version": "1.0.0",
   "main": "dist/main.js",

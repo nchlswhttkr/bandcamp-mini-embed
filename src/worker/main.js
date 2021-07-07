@@ -170,7 +170,7 @@ function generateResponse(embed) {
       <body>
       <main>
           <h1>bandcamp-mini-embed</h1>
-          <p>A small Svelte client for embedding albums from <a href="https://bandcamp.com/">Bandcamp</a> into your site</p>
+          <p>A music player embed for <a href="https://bandcamp.com/">Bandcamp</a> albums</p>
           <form>
               <label>Album URL <input type="text" name="url" /></label>
               <button>Generate embed</button>
