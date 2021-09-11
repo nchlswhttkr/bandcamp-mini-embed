@@ -9,7 +9,7 @@ A music player embed for Bandcamp albums
 
 Does this count as a microfrontend?
 
-![Three music players sit side by side - each player shows an album cover, details about the current song, music controls, and a list of tracks](./screenshot.png)
+![Three music players sit side by side - each player shows an album cover, details about the current song, music controls, and a list of tracks](./screenshots/albums.png)
 
 Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [Feather](https://feathericons.com/).
 
@@ -30,20 +30,27 @@ From here you can open your deployment, and enter the URL of the Bandcamp album 
 
 After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed the album.
 
-![A preview embed, alongside a code block containing this embed's code](./generate-embed.png)
+![A preview embed, alongside a code block containing this embed's code](./screenshots/generate-embed.png)
 
 ## Development
 
-To develop locally, you'll need to run development servers for the Svelte app _and_ the Cloudflare worker.
+To get started, clone this project, install dependencies and login with Cloudflare.
 
 ```sh
 git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
+nvm use
 npm ci
+npm run login
+```
+
+You can copy your account ID from here into this project's `wrangler.toml` config. After that, you can start the development server.
+
+```sh
 npm run dev
 ```
 
-Your changes will be reloaded on the fly, but you will need to reload the page to see them.
+Changes you make to the embed and the worker itself will trigger a rebuild of the worker, but you'll need to reload the page to access them.
 
 <!--
 TODO
