@@ -1,5 +1,10 @@
 // TODO: Use Boom for error responses
 
+global = {};
+Handlebars = require("handlebars");
+require("../../dist/templates/embed.hbs.js");
+require("../../dist/templates/home.hbs.js");
+
 addEventListener("fetch", (event) => {
   event.respondWith(handleRequest(event));
 });
@@ -93,7 +98,7 @@ async function getEmbedData(event) {
 
 async function getEmbed(event) {
   const url = new URL(event.request.url).searchParams.get("url");
-  let embed = "";
+  let embed;
   if (url !== null) {
     let { origin } = new URL(event.request.url);
     embed = await generateEmbed(url, origin);
@@ -127,77 +132,14 @@ async function generateEmbed(url, origin) {
   }
   title = matchTitle[1];
 
-  return `<!-- bandcamp-mini-embed https://github.com/nchlswhttkr/bandcamp-mini-embed -->
-<link rel="stylesheet" href="${origin}/embed/bundle.css"/>
-<div class="bandcamp-mini-embed" style="height: 336px"></div>
-<script
-    data-album-id="${albumId}"
-    data-fallback-text="${title}"
-    data-fallback-url="${url}"
-    src="${origin}/embed/bundle.js"
-></script>
-<noscript>
-    <a href="${url}">Listen to ${title} on Bandcamp</a>
-</noscript>
-`;
+  return Handlebars.templates["embed.hbs"]({
+    origin,
+    albumId,
+    title,
+    url,
+  });
 }
 
 function generateResponse(embed) {
-  return `
-  <!DOCTYPE html>
-  <html lang="en">
-      <head>
-      <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-      <title>bandcamp-mini-embed</title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <style>
-          main { color: #333; margin: 0 auto; max-width: 800px; font-family: monospace; }
-  
-          h1, p { text-align: center; }
-  
-          label { display: flex; justify-content: center; align-items: center; }
-  
-          input { margin-left: 8px; }
-  
-          button { display: block; margin: 16px auto; background-color: #fff; font-family: monospace; padding: 4px; border: 2px solid #333; }
-  
-          pre { background-color: #333; color: #fff; padding: 8px; line-height: 1.2rem; overflow-x: scroll; }
-  
-          .bandcamp-mini-embed { max-width: 400px; margin: 0 auto; }
-      </style>
-      </head>
-      <body>
-      <main>
-          <h1>bandcamp-mini-embed</h1>
-          <p>A music player embed for <a href="https://bandcamp.com/">Bandcamp</a> albums</p>
-          <form>
-              <label>Album URL <input type="text" name="url" /></label>
-              <button>Generate embed</button>
-          </form>
-          ${
-            embed &&
-            `
-              <pre><code id="embed-snippet">${embed
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")}</code></pre>
-              <button onclick="copyEmbed()">Copy embed</button>
-              ${embed}
-              <script>
-                  function copyEmbed() {
-                      navigator.clipboard.writeText(document.getElementById("embed-snippet").innerText);
-                  }
-              </script>
-              `
-          }
-          <p>
-              <a href="https://github.com/nchlswhttkr/bandcamp-mini-embed">Source code</a>
-              &bull;
-              <a href="/examples/">Example albums</a>
-          </p>
-      </main>
-      </body>
-  </html>  
-  `;
+  return Handlebars.templates["home.hbs"]({ embed });
 }
