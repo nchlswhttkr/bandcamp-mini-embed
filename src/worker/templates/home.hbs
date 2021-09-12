@@ -30,10 +30,23 @@
             <button>Generate embed</button>
         </form>
         {{#if embed}}
-            <pre><code id="embed-snippet">{{embed}}</code></pre>
             <button onclick="copyEmbed()">Copy embed</button>
-            {{{embed}}}
+            <div id="embed-target"></div>
+            <pre><code id="embed-snippet"></code></pre>
             <script>
+                const embed = `{{embed}}`.replace(/__EMBED_ORIGIN__/g, new URL(window.location).origin)
+                document.getElementById('embed-snippet').innerHTML = embed
+                const target = document.getElementById('embed-target')
+                target.innerHTML = document.getElementById('embed-snippet').innerText
+
+                const script = Array.from(target.children).find(element => element.tagName === "SCRIPT")
+                const replacement = document.createElement('script')
+                for (let i = 0; i < script.attributes.length; i++) {
+                    const attribute = script.attributes.item(i)
+                    replacement.setAttribute(attribute.name, attribute.value)
+                }
+                target.replaceChild(replacement, script)
+
                 function copyEmbed() {
                     navigator.clipboard.writeText(document.getElementById("embed-snippet").innerText);
                 }
