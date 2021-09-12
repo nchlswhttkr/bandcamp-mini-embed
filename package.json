@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "main": "dist/main.js",
   "scripts": {
-    "build": "rollup -c && esbuild src/worker/main.js --bundle --loader:.html=text --outfile=dist/main.js",
+    "build": "node build.js",
     "dev": "wrangler dev",
     "deploy": "NODE_ENV=production wrangler publish",
     "login": "wrangler login"
@@ -15,6 +15,7 @@
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "esbuild": "^0.12.26",
+    "handlebars": "^4.7.7",
     "raw-loader": "^4.0.2",
     "rollup": "^2.56.3",
     "rollup-plugin-css-only": "^3.1.0",

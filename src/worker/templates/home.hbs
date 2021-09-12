@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>bandcamp-mini-embed</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        main { color: #333; margin: 0 auto; max-width: 800px; font-family: monospace; }
+
+        h1, p { text-align: center; }
+
+        label { display: flex; justify-content: center; align-items: center; }
+
+        input { margin-left: 8px; }
+
+        button { display: block; margin: 16px auto; background-color: #fff; font-family: monospace; padding: 4px; border: 2px solid #333; }
+
+        pre { background-color: #333; color: #fff; padding: 8px; line-height: 1.2rem; overflow-x: scroll; }
+
+        .bandcamp-mini-embed { max-width: 400px; margin: 0 auto; }
+    </style>
+    </head>
+    <body>
+    <main>
+        <h1>bandcamp-mini-embed</h1>
+        <p>A music player embed for <a href="https://bandcamp.com/">Bandcamp</a> albums</p>
+        <form>
+            <label>Album URL <input type="text" name="url" /></label>
+            <button>Generate embed</button>
+        </form>
+        {{#if embed}}
+            <pre><code id="embed-snippet">{{embed}}</code></pre>
+            <button onclick="copyEmbed()">Copy embed</button>
+            {{{embed}}}
+            <script>
+                function copyEmbed() {
+                    navigator.clipboard.writeText(document.getElementById("embed-snippet").innerText);
+                }
+            </script>
+        {{/if}}
+        <p>
+            <a href="https://github.com/nchlswhttkr/bandcamp-mini-embed">Source code</a>
+            &bull;
+            <a href="/examples/">Example albums</a>
+        </p>
+    </main>
+    </body>
+</html>

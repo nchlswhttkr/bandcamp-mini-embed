@@ -5,4 +5,4 @@ workers_dev = true
 
 [build]
 upload.format = "service-worker"
-command = "npm run build" 
+command = "node build.js"
