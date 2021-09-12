@@ -24,12 +24,8 @@
     <body>
     <main>
         <h1>bandcamp-mini-embed</h1>
-        <p>A music player embed for <a href="https://bandcamp.com/">Bandcamp</a> albums</p>
-        <form>
-            <label>Album URL <input type="text" name="url" /></label>
-            <button>Generate embed</button>
-        </form>
         {{#if embed}}
+            <p>Here's your embed, you can copy the code for it below!</p>
             <button onclick="copyEmbed()">Copy embed</button>
             <div id="embed-target"></div>
             <pre><code id="embed-snippet"></code></pre>
@@ -51,6 +47,12 @@
                     navigator.clipboard.writeText(document.getElementById("embed-snippet").innerText);
                 }
             </script>
+        {{else}}
+        <p>A music player embed for <a href="https://bandcamp.com/">Bandcamp</a> albums</p>
+        <form>
+            <label>Album URL <input type="text" name="url" /></label>
+            <button>Generate embed</button>
+        </form>
         {{/if}}
         <p>
             <a href="https://github.com/nchlswhttkr/bandcamp-mini-embed">Source code</a>
