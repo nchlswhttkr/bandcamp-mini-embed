@@ -100,8 +100,7 @@ async function getEmbed(event) {
   const url = new URL(event.request.url).searchParams.get("url");
   let embed;
   if (url !== null) {
-    let { origin } = new URL(event.request.url);
-    embed = await generateEmbed(url, origin);
+    embed = await generateEmbed(url);
   }
 
   return new Response(generateResponse(embed), {
@@ -110,7 +109,7 @@ async function getEmbed(event) {
   });
 }
 
-async function generateEmbed(url, origin) {
+async function generateEmbed(url) {
   let text = await fetch(url).then((r) => {
     if (r.status !== 200) {
       throw new Error(`Received ${r.status} from Bandcamp`);
@@ -133,7 +132,6 @@ async function generateEmbed(url, origin) {
   title = matchTitle[1];
 
   return Handlebars.templates["embed.hbs"]({
-    origin,
     albumId,
     title,
     url,
