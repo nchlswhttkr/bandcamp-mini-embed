@@ -1,9 +1,19 @@
+/**
+ * A dependency of boom/call, hoek, references Node's Buffer API. Cloudflare
+ * rejects workers whose code references this unavailable API. Declaring a falsy
+ * value via an implicit global gets around this behaviour.
+ */
 Buffer = undefined;
 const Boom = require("@hapi/boom");
 const Call = require("@hapi/call");
 
 const bandcamp = require("./bandcamp.js");
 
+/**
+ * To get Handlebars to run on a worker (without Webpack's handlebars-loader),
+ * either the global or window APIs need to be available. Using an implicit
+ * global achieves this, even if it janky.
+ */
 global = {};
 Handlebars = require("handlebars");
 require("../../dist/templates/embed.hbs.js");
