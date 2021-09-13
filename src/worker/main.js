@@ -10,8 +10,11 @@ require("../../dist/templates/embed.hbs.js");
 require("../../dist/templates/home.hbs.js");
 
 const router = new Call.Router();
-router.add({ method: "get", path: "/" }, getEmbed);
-router.add({ method: "get", path: "/embed-data" }, getEmbedData);
+router.add({ method: "get", path: "/" }, getEmbedPage);
+router.add(
+  { method: "get", path: "/album/{albumId}" },
+  proxyAlbumEmbedDataRequest
+);
 router.add(
   { method: "get", path: "/examples/" },
   staticFileRouteGenerator(require("./examples.html"), "text/html")
@@ -53,7 +56,7 @@ async function handleRequest(event) {
     if (match.isBoom) {
       throw match;
     }
-    return await match.route(event);
+    return await match.route(event, match.params);
   } catch (error) {
     if (error.isBoom) {
       console.error(error.output.payload.message);
@@ -70,11 +73,7 @@ async function handleRequest(event) {
   }
 }
 
-async function getEmbedData(event) {
-  const albumId = new URL(event.request.url).searchParams.get("album");
-  if (albumId === null) {
-    throw Boom.badRequest("No album");
-  }
+async function proxyAlbumEmbedDataRequest(event, { albumId }) {
   const clientIP = event.request.headers.get("CF-Connecting-IP");
   if (clientIP === null) {
     throw Boom.badRequest("No origin IP");
@@ -95,29 +94,16 @@ async function getEmbedData(event) {
   });
 }
 
-async function getEmbed(event) {
+async function getEmbedPage(event) {
   const url = new URL(event.request.url).searchParams.get("url");
   let embed;
   if (url !== null) {
-    embed = await generateEmbed(url);
+    const { albumId, title } = await bandcamp.getAlbumDetails(url);
+    embed = Handlebars.templates["embed.hbs"]({ albumId, title, url });
   }
 
-  return new Response(generateResponse(embed), {
+  return new Response(Handlebars.templates["home.hbs"]({ embed }), {
     status: 200,
     headers: { "Content-Type": "text/html" },
   });
-}
-
-async function generateEmbed(url) {
-  const { albumId, title } = await bandcamp.getAlbumDetails(url);
-
-  return Handlebars.templates["embed.hbs"]({
-    albumId,
-    title,
-    url,
-  });
-}
-
-function generateResponse(embed) {
-  return Handlebars.templates["home.hbs"]({ embed });
 }
