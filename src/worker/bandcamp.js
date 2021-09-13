@@ -1,3 +1,5 @@
+const Boom = require("@hapi/boom");
+
 module.exports = {
   getAlbumPlayerData,
   getAlbumDetails,
@@ -23,14 +25,14 @@ async function getAlbumPlayerData(albumId, clientIP, referrer) {
 
   const response = await fetch(request);
   if (response.status !== 200) {
-    throw new Error(`Received ${response.status} from Bandcamp`);
+    throw Boom.internal(`Received ${response.status} from Bandcamp`);
   }
   const text = await response.text();
 
   // Player data is stored as a data attribute in the document... hmm...
   const match = text.match(/data-player-data="([^"]*)"/);
   if (match === null) {
-    throw new Error("Could not read player data from Bandcamp");
+    throw Boom.internal("Could not read player data from Bandcamp");
   }
   return match[1].replace(/&quot;/g, '"');
 }
@@ -50,21 +52,21 @@ async function getAlbumPlayerData(albumId, clientIP, referrer) {
 async function getAlbumDetails(url) {
   let response = await fetch(url);
   if (response.status !== 200) {
-    throw new Error(`Received ${response.status} from Bandcamp`);
+    throw Boom.internal(`Received ${response.status} from Bandcamp`);
   }
   const text = await response.text();
 
   let albumId;
   const matchAlbumId = text.match(/<!-- album id ([0-9]*) -->\n$/);
   if (matchAlbumId === null) {
-    throw new Error("Could not find album ID");
+    throw Boom.internal("Could not find album ID");
   }
   albumId = matchAlbumId[1];
 
   let title;
   let matchTitle = text.match(/<meta name="title" content="(.*)">/);
   if (matchTitle === null) {
-    throw new Error("Could not find album title");
+    throw Boom.internal("Could not find album title");
   }
   title = matchTitle[1];
 

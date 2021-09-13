@@ -1,4 +1,5 @@
-// TODO: Use Boom for error responses
+Buffer = undefined;
+const Boom = require("@hapi/boom");
 
 const bandcamp = require("./bandcamp.js");
 
@@ -39,11 +40,19 @@ async function handleRequest(event) {
         return getEmbedData(event);
       case "/":
         return getEmbed(event);
-      default:
-        return new Response("Page not found", { status: 404 });
     }
+
+    throw Boom.notFound();
   } catch (error) {
-    return new Response("Error", {
+    if (error.isBoom) {
+      console.error(error.output.payload.message);
+      return new Response(error.output.payload.error, {
+        status: error.output.payload.statusCode,
+      });
+    }
+
+    console.error(error);
+    return new Response("Interal Server Error", {
       status: 500,
       headers: { "Access-Control-Allow-Origin": "*" },
     });
@@ -53,15 +62,15 @@ async function handleRequest(event) {
 async function getEmbedData(event) {
   const albumId = new URL(event.request.url).searchParams.get("album");
   if (albumId === null) {
-    throw new Error("No album");
+    throw Boom.badRequest("No album");
   }
   const clientIP = event.request.headers.get("CF-Connecting-IP");
   if (clientIP === null) {
-    throw new Error("No origin IP");
+    throw Boom.badRequest("No origin IP");
   }
   const referrer = event.request.headers.get("Referer");
   if (referrer === null) {
-    throw new Error("No referrer");
+    throw Boom.badRequest("No referrer");
   }
 
   const data = await bandcamp.getAlbumPlayerData(albumId, clientIP, referrer);
