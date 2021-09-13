@@ -53,7 +53,7 @@
   async function load() {
     try {
       const response = await fetch(
-        `${origin}/embed-data?album=${encodeURIComponent(albumId)}`
+        `${origin}/album/${encodeURIComponent(albumId)}`
       ).then(async (r) => {
         if (r.status !== 200) {
           throw new Error(await r.text());
