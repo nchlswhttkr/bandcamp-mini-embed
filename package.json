@@ -13,6 +13,7 @@
   "dependencies": {
     "@cloudflare/wrangler": "^1.19.2",
     "@hapi/boom": "^9.1.4",
+    "@hapi/call": "^8.0.1",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "esbuild": "^0.12.26",
