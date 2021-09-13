@@ -1,5 +1,7 @@
 // TODO: Use Boom for error responses
 
+const bandcamp = require("./bandcamp.js");
+
 global = {};
 Handlebars = require("handlebars");
 require("../../dist/templates/embed.hbs.js");
@@ -49,43 +51,20 @@ async function handleRequest(event) {
 }
 
 async function getEmbedData(event) {
-  const album = new URL(event.request.url).searchParams.get("album");
-  if (album === null) {
+  const albumId = new URL(event.request.url).searchParams.get("album");
+  if (albumId === null) {
     throw new Error("No album");
   }
   const clientIP = event.request.headers.get("CF-Connecting-IP");
+  if (clientIP === null) {
+    throw new Error("No origin IP");
+  }
   const referrer = event.request.headers.get("Referer");
   if (referrer === null) {
     throw new Error("No referrer");
   }
 
-  // TODO: Should origins be restricted?
-
-  const request = new Request(
-    `https://bandcamp.com/EmbeddedPlayer/ref=${encodeURIComponent(
-      referrer
-    )}/album=${album}`,
-    event.request
-  );
-  if (clientIP !== null) {
-    request.headers.set("X-Forwarded-For", clientIP);
-    request.headers.set("Forwarded", `for=${clientIP}`);
-  }
-  let data = await fetch(request)
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error(`Received ${response.status} from Bandcamp`);
-      }
-      return response.text();
-    })
-    .then((text) => {
-      // Player data is stored as a data attribute in the document... hmm...
-      const match = text.match(/data-player-data="([^"]*)"/);
-      if (match === null) {
-        throw new Error("Could not read player data from Bandcamp");
-      }
-      return match[1].replace(/&quot;/g, '"');
-    });
+  const data = await bandcamp.getAlbumPlayerData(albumId, clientIP, referrer);
 
   return new Response(data, {
     status: 200,
@@ -110,26 +89,7 @@ async function getEmbed(event) {
 }
 
 async function generateEmbed(url) {
-  let text = await fetch(url).then((r) => {
-    if (r.status !== 200) {
-      throw new Error(`Received ${r.status} from Bandcamp`);
-    }
-    return r.text();
-  });
-
-  let albumId;
-  const matchAlbumId = text.match(/<!-- album id ([0-9]*) -->\n$/);
-  if (matchAlbumId === null) {
-    throw new Error("Could not find album ID");
-  }
-  albumId = matchAlbumId[1];
-
-  let title;
-  let matchTitle = text.match(/<meta name="title" content="(.*)">/);
-  if (matchTitle === null) {
-    throw new Error("Could not find album title");
-  }
-  title = matchTitle[1];
+  const { albumId, title } = await bandcamp.getAlbumDetails(url);
 
   return Handlebars.templates["embed.hbs"]({
     albumId,
