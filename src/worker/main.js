@@ -1,5 +1,6 @@
 Buffer = undefined;
 const Boom = require("@hapi/boom");
+const Call = require("@hapi/call");
 
 const bandcamp = require("./bandcamp.js");
 
@@ -8,6 +9,37 @@ Handlebars = require("handlebars");
 require("../../dist/templates/embed.hbs.js");
 require("../../dist/templates/home.hbs.js");
 
+const router = new Call.Router();
+router.add({ method: "get", path: "/" }, getEmbed);
+router.add({ method: "get", path: "/embed-data" }, getEmbedData);
+router.add(
+  { method: "get", path: "/examples/" },
+  staticFileRouteGenerator(require("./examples.html"), "text/html")
+);
+router.add(
+  { method: "get", path: "/robots.txt" },
+  staticFileRouteGenerator(require("./robots.txt"), "text/plain")
+);
+router.add(
+  { method: "get", path: "/embed/bundle.js" },
+  staticFileRouteGenerator(
+    require("../../dist/embed/bundle.js.txt"),
+    "application/javascript"
+  )
+);
+router.add(
+  { method: "get", path: "/embed/bundle.css" },
+  staticFileRouteGenerator(
+    require("../../dist/embed/bundle.css.txt"),
+    "text/css"
+  )
+);
+
+function staticFileRouteGenerator(body, type) {
+  return () =>
+    new Response(body, { status: 200, headers: { "Content-Type": type } });
+}
+
 addEventListener("fetch", (event) => {
   event.respondWith(handleRequest(event));
 });
@@ -15,34 +47,13 @@ addEventListener("fetch", (event) => {
 async function handleRequest(event) {
   try {
     const { pathname } = new URL(event.request.url);
-    switch (pathname) {
-      case "/embed/bundle.js":
-        return new Response(require("../../dist/embed/bundle.js.txt"), {
-          status: 200,
-          headers: { "Content-Type": "application/javascript" },
-        });
-      case "/embed/bundle.css":
-        return new Response(require("../../dist/embed/bundle.css.txt"), {
-          status: 200,
-          headers: { "Content-Type": "text/css" },
-        });
-      case "/examples/":
-        return new Response(require("./examples.html"), {
-          status: 200,
-          headers: { "Content-Type": "text/html" },
-        });
-      case "/robots.txt":
-        return new Response(require("./robots.txt"), {
-          status: 200,
-          headers: { "Content-Type": "text/plain" },
-        });
-      case "/embed-data":
-        return getEmbedData(event);
-      case "/":
-        return getEmbed(event);
-    }
+    const method = event.request.method.toLowerCase();
 
-    throw Boom.notFound();
+    const match = router.route(method, pathname);
+    if (match.isBoom) {
+      throw match;
+    }
+    return await match.route(event);
   } catch (error) {
     if (error.isBoom) {
       console.error(error.output.payload.message);
