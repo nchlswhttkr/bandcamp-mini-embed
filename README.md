@@ -34,19 +34,13 @@ After you hit **Generate embed**, you'll see a preview of the embed as well the 
 
 ## Development
 
-To get started, clone this project, install dependencies and login with Cloudflare.
+To get started, clone this project and install dependencies. After that you can run the local development server.
 
 ```sh
 git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
 cd bandcamp-mini-embed
 nvm use
 npm ci
-npm run login
-```
-
-You can copy your account ID from here into this project's `wrangler.toml` config. After that, you can start the development server.
-
-```sh
 npm run dev
 ```
 

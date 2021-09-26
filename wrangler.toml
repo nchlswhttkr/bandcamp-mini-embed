@@ -1,5 +1,4 @@
 name = "bandcamp-mini-embed"
-# account_id = ""
 type = "javascript"
 workers_dev = true
 
