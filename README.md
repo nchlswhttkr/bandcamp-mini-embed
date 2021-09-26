@@ -45,15 +45,3 @@ npm run dev
 ```
 
 Changes you make to the embed and the worker itself will trigger a rebuild of the worker, but you'll need to reload the page to access them.
-
-<!--
-TODO
- - https://botany.bandcamp.com/track/fourteen-45-tails
- - Support tracks rather than only albums
- - Document that player doesn't seem to play nice with constructor API
- - Check compatability with audio/source elements, fix console errors
- - Look for guidance on range input accessibility
- - Error handling if no tracks are streamable
- - Remove/resolve workaround with inconsistent seeking on Firefox
- - Fix album artwork appearing distorted on Safari (specify img width)
- -->

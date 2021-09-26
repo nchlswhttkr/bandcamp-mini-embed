@@ -15,9 +15,16 @@
   let album;
   let albumUrl;
   let artwork;
-  let audio;
   let paused;
   let currentTime;
+
+  /**
+   * I encountered some buggy heaviour using the Audio() constructor API, so my
+   * current preference is to bind an to <audio> element and work off that.
+   *
+   * TODO: Re-evaluate whether I can use the Audio() constructor
+   */
+  let audio;
 
   $: {
     // Seek back/forwards to find the next streamable track (may not exist!)
@@ -92,6 +99,7 @@
     // Seeking via currentTime is inconsistent in Firefox, seems to be a
     // regression of https://github.com/sveltejs/svelte/issues/3524
     // Instead, rely on setting it via DOM
+    // TODO: Remove this workaround once Firefox becomes compatible
     document.getElementById(`bandcamp-audio-${albumId}`).currentTime = time;
     // currentTime = time
   }
