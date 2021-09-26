@@ -73,6 +73,11 @@
       tracks = response.tracks;
       currentTrack =
         tracks.findIndex(({ id }) => id === response.featured_track_id) || 0;
+
+      // Fail to load the album if no tracks are streamable
+      if (tracks.every((track) => !track.track_streaming)) {
+        throw new Error(`No tracks on album ${albumId} are streamable`);
+      }
     } catch (error) {
       console.error(error);
       throw error;
