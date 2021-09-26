@@ -15,5 +15,6 @@ cp.execSync(
 
 console.log("--- Bundling worker code");
 cp.execSync(
-  "esbuild src/worker/main.js --bundle --loader:.html=text --external:fs --outfile=dist/main.js"
+  "esbuild src/worker/main.js --bundle --loader:.html=text --external:fs --outfile=dist/main.js" +
+    (process.env.NODE_ENV === "production" ? " --minify" : "")
 );
