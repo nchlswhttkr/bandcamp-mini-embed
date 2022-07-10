@@ -1,7 +1,8 @@
 name = "bandcamp-mini-embed"
-type = "javascript"
+main = "build/worker.js"
+compatibility_date = "2022-07-01"
 workers_dev = true
 
 [build]
-upload.format = "service-worker"
 command = "node build.js"
+watch_dir = "src"

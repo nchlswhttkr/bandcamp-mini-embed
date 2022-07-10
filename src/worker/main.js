@@ -16,8 +16,8 @@ const bandcamp = require("./bandcamp.js");
  */
 global = {};
 Handlebars = require("handlebars");
-require("../../dist/templates/embed.hbs.js");
-require("../../dist/templates/home.hbs.js");
+require("../../build/templates/embed.hbs.js");
+require("../../build/templates/home.hbs.js");
 
 const router = new Call.Router();
 router.add({ method: "get", path: "/" }, getEmbedPage);
@@ -36,14 +36,14 @@ router.add(
 router.add(
   { method: "get", path: "/embed/bundle.js" },
   staticFileRouteGenerator(
-    require("../../dist/embed/bundle.js.txt"),
+    require("../../build/embed/bundle.js.txt"),
     "application/javascript"
   )
 );
 router.add(
   { method: "get", path: "/embed/bundle.css" },
   staticFileRouteGenerator(
-    require("../../dist/embed/bundle.css.txt"),
+    require("../../build/embed/bundle.css.txt"),
     "text/css"
   )
 );

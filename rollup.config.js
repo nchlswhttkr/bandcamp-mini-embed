@@ -12,7 +12,7 @@ export default {
   output: {
     format: "iife",
     name: "app",
-    file: "dist/embed/bundle.js.txt",
+    file: "build/embed/bundle.js.txt",
   },
   plugins: [
     svelte({
