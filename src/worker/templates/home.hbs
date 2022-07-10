@@ -10,7 +10,7 @@
         main {
             color: #333;
             margin: 0 auto;
-            max-width: 800px;
+            max-width: 720px;
             font-family: monospace;
         }
 
@@ -59,10 +59,10 @@
     <main>
         <h1>bandcamp-mini-embed</h1>
         {{#if embed}}
-        <p>Here's your embed, you can copy the code for it below!</p>
-        <button onclick="copyEmbed()">Copy embed</button>
-        <div id="embed-target"></div>
+        <p>Here's your embed code, you can copy it to your website!</p>
         <pre><code id="embed-snippet"></code></pre>
+        <button onclick="copyEmbed()">Copy embed code</button>
+        <div id="embed-target"></div>
         <script>
             const embed = `{{embed}}`.replace(/__EMBED_ORIGIN__/g, new URL(window.location).origin)
             document.getElementById('embed-snippet').innerHTML = embed
