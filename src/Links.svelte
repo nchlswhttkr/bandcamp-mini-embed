@@ -19,7 +19,7 @@
 
 <style>
   .links {
-    height: 46px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: flex-end;

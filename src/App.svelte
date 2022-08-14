@@ -154,7 +154,7 @@
     width: 100%;
     max-width: 480px;
     box-sizing: border-box;
-    height: 336px;
+    min-height: 210px; /* 120 + 40 + 48 + 2 (border) */
     border: 1px solid #bbb;
   }
   /* This interferes the SVGs inside buttons, ignore them */
