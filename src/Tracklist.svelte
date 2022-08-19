@@ -58,7 +58,6 @@
     overflow-y: scroll;
     max-height: 200px;
     transition: max-height 0.2s;
-    padding: 8px 0;
   }
 
   .tracklist.collapsed {
@@ -85,7 +84,7 @@
 
   .tracks {
     margin: 0;
-    padding: 0;
+    padding: 8px 0;
   }
   .tracks > * {
     font-size: 12px;
