@@ -19,4 +19,5 @@ steps:
           run: ci
           config: .buildkite/docker-compose.yml
           env:
+            - CLOUDFLARE_ACCOUNT_ID
             - CLOUDFLARE_API_TOKEN
