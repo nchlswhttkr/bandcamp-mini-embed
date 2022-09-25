@@ -1,0 +1,7 @@
+version: "3"
+services:
+  ci:
+    working_dir: /bandcamp-mini-embed
+    volumes:
+      - ..:/bandcamp-mini-embed
+    image: node:16

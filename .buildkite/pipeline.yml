@@ -1,0 +1,10 @@
+steps:
+  - label: ":prettier: Lint"
+    key: lint
+    command:
+      - npm ci
+      - npm run lint
+    plugins:
+      - docker-compose#v3.10.0:
+          run: ci
+          config: .buildkite/docker-compose.yml
