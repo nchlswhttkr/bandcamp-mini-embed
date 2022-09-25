@@ -1,0 +1,32 @@
+steps:
+  - label: ":node: Lint"
+    key: lint
+    command:
+      - npm ci
+      - npm run lint
+    plugins:
+      - docker-compose#v3.10.0:
+          run: ci
+          config: .buildkite/docker-compose.yml
+  - label: ":cloudflare: Build"
+    command:
+      - npm ci
+      - npm run build
+    plugins:
+      - docker-compose#v3.10.0:
+          run: ci
+          config: .buildkite/docker-compose.yml
+  - label: ":cloudflare: Build and deploy"
+    key: deploy
+    depends_on: lint
+    if: build.branch == pipeline.default_branch
+    command:
+      - npm ci
+      - npm run deploy
+    plugins:
+      - docker-compose#v3.10.0:
+          run: ci
+          config: .buildkite/docker-compose.yml
+          env:
+            - CLOUDFLARE_ACCOUNT_ID
+            - CLOUDFLARE_API_TOKEN

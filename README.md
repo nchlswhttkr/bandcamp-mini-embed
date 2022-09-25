@@ -15,20 +15,13 @@ Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [
 
 ## Usage
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/nchlswhttkr/bandcamp-mini-embed)
+To set up your own deployment, clone this repository and deploy your own copy of the worker.
 
-To set up your own deployment, you follow the steps below or use button above.
-
-1. [Fork this repository](https://github.com/nchlswhttkr/bandcamp-mini-embed/fork)
-1. Enable GitHub Actions in your fork from the **Actions** tab
-1. Add your `CF_ACCOUNT_ID` and `CF_API_TOKEN` repository secrets in the **Secrets** section of the **Settings** tab
-   - Your Cloudflare account ID can be copied from [the dashboard](https://dash.cloudflare.com/?to=/:account/workers/overview)
-   - You'll need to [create an API token](https://dash.cloudflare.com/profile/api-tokens) with the `Workers Script:Edit` permission
-1. From the **Actions** tab, select the **Build and deploy to Cloudflare** workflow and trigger a run on the `main` branch with the **Run workflow** button.
-
-From here you can open your deployment, and enter the URL of the Bandcamp album you'd like to embed into the form.
-
-After you hit **Generate embed**, you'll see a preview of the embed as well the code snippet powering it. You can use this code wherever you'd like to embed the album.
+```sh
+nvm use
+npm ci
+npm run deploy
+```
 
 ![A preview embed, alongside a code block containing this embed's code](./screenshots/generate-embed.png)
 
@@ -37,8 +30,6 @@ After you hit **Generate embed**, you'll see a preview of the embed as well the 
 To get started, clone this project and install dependencies. After that you can run the local development server.
 
 ```sh
-git clone https://github.com/nchlswhttkr/bandcamp-mini-embed.git
-cd bandcamp-mini-embed
 nvm use
 npm ci
 npm run dev

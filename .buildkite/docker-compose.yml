@@ -1,0 +1,9 @@
+version: "3"
+services:
+  ci:
+    working_dir: /bandcamp-mini-embed
+    volumes:
+      - ..:/bandcamp-mini-embed
+    image: node:16
+    environment:
+      - CI # Wrangler CLI will do interactive prompts outside of CI
