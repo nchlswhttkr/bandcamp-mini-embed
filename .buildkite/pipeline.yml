@@ -9,6 +9,7 @@ steps:
           run: ci
           config: .buildkite/docker-compose.yml
   - label: ":cloudflare: Build"
+    if: build.branch != pipeline.default_branch
     command:
       - npm ci
       - npm run build
