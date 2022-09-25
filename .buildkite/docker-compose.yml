@@ -6,4 +6,4 @@ services:
       - ..:/bandcamp-mini-embed
     image: node:16
     environment:
-      - CI
+      - CI # Wrangler CLI will do interactive prompts outside of CI
