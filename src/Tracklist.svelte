@@ -20,10 +20,10 @@
       {@html downChevron} Show tracklist
     </button>
   {:else}
-    <ul class="tracks">
+    <div class="tracks">
       {#each tracks as track, i}
-        <li
-          tabindex={tracks[i].track_streaming ? 0 : -1}
+        <button
+          disabled={!tracks[i].track_streaming}
           class:now-playing={i === currentTrack}
           class:unstreamable={!tracks[i].track_streaming}
           on:click={() => tracks[i].track_streaming && play(i)}
@@ -46,9 +46,9 @@
           </span>
           {@html "  " + track.title}
           {#if track.artist !== artist}– {track.artist}{/if}
-        </li>
+        </button>
       {/each}
-    </ul>
+    </div>
   {/if}
 </div>
 
@@ -87,11 +87,16 @@
     padding: 8px 0;
   }
   .tracks > * {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-family: sans-serif;
+    background: none;
     font-size: 12px;
     cursor: pointer;
     margin: 0px 12px;
     padding: 10px 8px;
-    list-style-type: none;
+    border: 0;
     border-bottom: 1px solid #bbb;
     white-space: pre;
     overflow: hidden;

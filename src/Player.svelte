@@ -43,6 +43,8 @@
 
 <div class="player">
   <div class="artwork">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- Duplicates the play button's functionality, just useful for mobile -->
     <img on:click={toggle} src={artwork} alt="Cover artwork for {album}" />
   </div>
   <div class="info">
