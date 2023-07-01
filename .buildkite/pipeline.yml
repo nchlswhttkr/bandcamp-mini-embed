@@ -24,6 +24,8 @@ steps:
     command:
       - npm ci
       - npm run deploy
+    env:
+      VAULT_ROLE_ID: 703f9e62-1225-507b-ab21-9b762f8db482
     plugins:
       - docker-compose#v3.10.0:
           run: ci
