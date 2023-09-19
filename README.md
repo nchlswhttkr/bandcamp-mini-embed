@@ -1,4 +1,4 @@
-# bandcamp-mini-embed
+# bandcamp-mini-embed [![Build status](https://badge.buildkite.com/c9d12772c3dff90c2d53ae333d2dd73eda7a384ae3a9d02bdd.svg?branch=main)](https://buildkite.com/nchlswhttkr/bandcamp-mini-embed)
 
 A music player embed for Bandcamp albums
 
