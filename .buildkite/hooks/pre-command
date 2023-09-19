@@ -3,8 +3,8 @@
 set -euo pipefail
 
 if [[ "$BUILDKITE_STEP_KEY" =~ "deploy" ]]; then
-    CLOUDFLARE_ACCOUNT_ID="$(vault kv get kv/buildkite/bandcamp-mini-embed cloudflare_account_id)"
+    CLOUDFLARE_ACCOUNT_ID="$(vault kv get -field cloudflare_account_id kv/buildkite/bandcamp-mini-embed)"
     export CLOUDFLARE_ACCOUNT_ID
-    CLOUDFLARE_API_TOKEN="$(vault kv get kv/buildkite/bandcamp-mini-embed cloudflare_api_token)"
+    CLOUDFLARE_API_TOKEN="$(vault kv get -field cloudflare_api_token kv/buildkite/bandcamp-mini-embed)"
     export CLOUDFLARE_API_TOKEN
 fi
