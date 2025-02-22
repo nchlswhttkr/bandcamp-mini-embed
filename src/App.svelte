@@ -1,22 +1,21 @@
 <script>
-  export let albumId;
-  export let origin;
-  export let fallbackText;
-  export let fallbackUrl;
-
+  // TODO: Remove usage of run suggested by Svelte 5 migration
+  import { run } from "svelte/legacy";
   import Links from "./Links.svelte";
   import Tracklist from "./Tracklist.svelte";
   import Player from "./Player.svelte";
 
-  let tracks;
-  let previousTrack;
-  let currentTrack;
-  let nextTrack;
-  let album;
-  let albumUrl;
-  let artwork;
-  let paused;
-  let currentTime;
+  let { albumId, origin, fallbackText, fallbackUrl } = $props();
+
+  let tracks = $state();
+  let previousTrack = $state();
+  let currentTrack = $state();
+  let nextTrack = $state();
+  let album = $state();
+  let albumUrl = $state();
+  let artwork = $state();
+  let paused = $state();
+  let currentTime = $state();
 
   /**
    * I encountered some buggy heaviour using the Audio() constructor API, so my
@@ -24,9 +23,9 @@
    *
    * TODO: Re-evaluate whether I can use the Audio() constructor
    */
-  let audio;
+  let audio = $state();
 
-  $: {
+  run(() => {
     // Seek back/forwards to find the next streamable track (may not exist!)
     if (tracks !== undefined) {
       let seekingPreviousTrack = currentTrack;
@@ -55,12 +54,12 @@
         nextTrack = undefined;
       }
     }
-  }
+  });
 
   async function load() {
     try {
       const response = await fetch(
-        `${origin}/album/${encodeURIComponent(albumId)}`
+        `${origin}/album/${encodeURIComponent(albumId)}`,
       ).then(async (r) => {
         if (r.status !== 200) {
           throw new Error(await r.text());
@@ -110,14 +109,14 @@
   }
 </script>
 
-<!-- svelte-ignore a11y-media-has-caption -->
+<!-- svelte-ignore a11y_media_has_caption -->
 <audio
   id={`bandcamp-audio-${albumId}`}
   bind:this={audio}
   bind:paused
   bind:currentTime
-  on:ended={() => play(nextTrack)}
-/>
+  onended={() => play(nextTrack)}
+></audio>
 <div class="root">
   {#await load() then _}
     <Player
@@ -157,8 +156,9 @@
     min-height: 210px; /* 120 + 40 + 48 + 2 (border) */
     border: 1px solid #bbb;
   }
+
   /* This interferes the SVGs inside buttons, ignore them */
-  .root :global(:not(button *)) {
+  :global(.root :not(button *)) {
     all: revert;
   }
 

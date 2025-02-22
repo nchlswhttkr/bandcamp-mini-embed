@@ -1,21 +1,23 @@
 <script>
-  export let artwork;
-  export let album;
-  export let albumUrl;
-  export let tracks;
-  export let currentTrack;
-  export let paused;
-  export let play;
-  export let pause;
-  export let seek;
-  export let currentTime;
-  export let previousTrack;
-  export let nextTrack;
-
   import playIcon from "./icons/play.svg";
   import pauseIcon from "./icons/pause.svg";
   import previousIcon from "./icons/previous.svg";
   import nextIcon from "./icons/next.svg";
+
+  let {
+    artwork,
+    album,
+    albumUrl,
+    tracks,
+    currentTrack,
+    paused,
+    play,
+    pause,
+    seek,
+    currentTime,
+    previousTrack,
+    nextTrack,
+  } = $props();
 
   function toggle() {
     if (paused) {
@@ -25,7 +27,7 @@
     }
   }
 
-  let seekingTime;
+  let seekingTime = $state();
   function handleSeeking(event) {
     switch (event.type) {
       case "change":
@@ -43,9 +45,9 @@
 
 <div class="player">
   <div class="artwork">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- Duplicates the play button's functionality, just useful for mobile -->
-    <img on:click={toggle} src={artwork} alt="Cover artwork for {album}" />
+    <img onclick={toggle} src={artwork} alt="Cover artwork for {album}" />
   </div>
   <div class="info">
     <p>
@@ -60,7 +62,7 @@
     <div class="controls">
       <button
         aria-label={paused ? "Play current song" : "Pause current song"}
-        on:click={paused ? () => play(currentTrack) : pause}
+        onclick={paused ? () => play(currentTrack) : pause}
       >
         {@html paused ? playIcon : pauseIcon}
       </button>
@@ -70,19 +72,19 @@
         min="0"
         max={Math.floor(tracks[currentTrack].duration)}
         value={(seekingTime === undefined ? currentTime : seekingTime) || 0}
-        on:change={handleSeeking}
-        on:input={handleSeeking}
+        onchange={handleSeeking}
+        oninput={handleSeeking}
       />
       <button
         aria-label="Play previous song"
-        on:click={() => play(previousTrack)}
+        onclick={() => play(previousTrack)}
         disabled={previousTrack === undefined}
       >
         {@html previousIcon}
       </button>
       <button
         aria-label="Play next song"
-        on:click={() => play(nextTrack)}
+        onclick={() => play(nextTrack)}
         disabled={nextTrack === undefined}
       >
         {@html nextIcon}

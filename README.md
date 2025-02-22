@@ -18,7 +18,7 @@ Bandcamp logo is property of [Bandcamp](https://bandcamp.com). Icons belong to [
 To set up your own deployment, clone this repository and deploy your own copy of the worker.
 
 ```sh
-nvm use
+nvm install
 npm ci
 npm run deploy
 ```

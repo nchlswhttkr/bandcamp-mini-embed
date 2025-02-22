@@ -1,4 +1,5 @@
 import App from "./App.svelte";
+import { mount } from "svelte";
 
 {
   const albumId = document.currentScript.getAttribute("data-album-id");
@@ -13,7 +14,7 @@ import App from "./App.svelte";
       return;
     }
     observer.disconnect();
-    new App({
+    mount(App, {
       target,
       props: { albumId, origin, fallbackText, fallbackUrl },
     });

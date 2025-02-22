@@ -1,7 +1,7 @@
 import svelte from "rollup-plugin-svelte";
 // import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import css from "rollup-plugin-css-only";
 import image from "@rollup/plugin-image";
 

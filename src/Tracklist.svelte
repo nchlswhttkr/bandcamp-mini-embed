@@ -1,22 +1,20 @@
 <script>
-  export let tracks;
-  export let currentTrack;
-  export let play;
-
   import downChevron from "./icons/chevron-down.svg";
 
-  let collapsed = true;
+  let { tracks, currentTrack, play } = $props();
+
+  let collapsed = $state(true);
 
   function showTracklist() {
     collapsed = false;
   }
 
-  $: artist = tracks[currentTrack].artist;
+  let artist = $derived(tracks[currentTrack].artist);
 </script>
 
 <div class="tracklist" class:collapsed>
   {#if collapsed}
-    <button class="expand" on:click={showTracklist}>
+    <button class="expand" onclick={showTracklist}>
       {@html downChevron} Show tracklist
     </button>
   {:else}
@@ -26,8 +24,8 @@
           disabled={!tracks[i].track_streaming}
           class:now-playing={i === currentTrack}
           class:unstreamable={!tracks[i].track_streaming}
-          on:click={() => tracks[i].track_streaming && play(i)}
-          on:keydown={(e) => {
+          onclick={() => tracks[i].track_streaming && play(i)}
+          onkeydown={(e) => {
             if (
               tracks[i].track_streaming &&
               (e.key === " " || e.key === "Enter")

@@ -1,12 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <title>Bandcamp Mini Embed</title>
-
-    <link rel="stylesheet" href="/embed/bundle.css" />
 
     <style>
       body > div {
@@ -15,7 +13,7 @@
 
       /* Test 'all: revert' works by applying ugly styles */
       /* These changes should not be visible */
-      .root *:not(button *) {
+      .root :not(button *) {
         border: 1px solid red;
         color: red;
         display: inline;
@@ -29,6 +27,8 @@
         }
       }
     </style>
+
+    <link rel="stylesheet" href="/embed/bundle.css" />
   </head>
 
   <body style="margin: 0">

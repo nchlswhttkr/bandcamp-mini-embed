@@ -1,8 +1,8 @@
 <script>
-  export let albumUrl;
-
   import bandcampLogoColor from "./icons/bandcamp-logotype-color.png";
   import bandcampLogoWhite from "./icons/bandcamp-logotype-white.png";
+
+  let { albumUrl } = $props();
 </script>
 
 <div class="links">
