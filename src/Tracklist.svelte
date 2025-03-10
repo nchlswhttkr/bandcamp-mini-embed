@@ -92,7 +92,6 @@
     background: none;
     font-size: 12px;
     cursor: pointer;
-    margin: 0px 12px;
     padding: 10px 8px;
     border: 0;
     border-bottom: 1px solid #bbb;
