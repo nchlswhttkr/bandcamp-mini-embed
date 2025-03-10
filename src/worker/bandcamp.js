@@ -17,8 +17,8 @@ async function getAlbumPlayerData(albumId, clientIP, referrer) {
   // Form a request with the necessary shape
   const request = new Request(
     `https://bandcamp.com/EmbeddedPlayer/ref=${encodeURIComponent(
-      referrer
-    )}/album=${albumId}`
+      referrer,
+    )}/album=${albumId}`,
   );
   request.headers.set("X-Forwarded-For", clientIP);
   request.headers.set("Forwarded", `for=${clientIP}`);

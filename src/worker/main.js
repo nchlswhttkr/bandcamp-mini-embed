@@ -23,29 +23,29 @@ const router = new Call.Router();
 router.add({ method: "get", path: "/" }, getEmbedPage);
 router.add(
   { method: "get", path: "/album/{albumId}" },
-  proxyAlbumEmbedDataRequest
+  proxyAlbumEmbedDataRequest,
 );
 router.add(
   { method: "get", path: "/examples/" },
-  staticFileRouteGenerator(require("./examples.html"), "text/html")
+  staticFileRouteGenerator(require("./examples.html"), "text/html"),
 );
 router.add(
   { method: "get", path: "/robots.txt" },
-  staticFileRouteGenerator(require("./robots.txt"), "text/plain")
+  staticFileRouteGenerator(require("./robots.txt"), "text/plain"),
 );
 router.add(
   { method: "get", path: "/embed/bundle.js" },
   staticFileRouteGenerator(
     require("../../build/embed/bundle.js.txt"),
-    "application/javascript"
-  )
+    "application/javascript",
+  ),
 );
 router.add(
   { method: "get", path: "/embed/bundle.css" },
   staticFileRouteGenerator(
     require("../../build/embed/bundle.css.txt"),
-    "text/css"
-  )
+    "text/css",
+  ),
 );
 
 function staticFileRouteGenerator(body, type) {
