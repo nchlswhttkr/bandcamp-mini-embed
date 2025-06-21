@@ -24,6 +24,6 @@
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-svelte": "^7.2.2",
     "svelte": "^5.0.0",
-    "wrangler": "^3.109.2"
+    "wrangler": "^4.20.5"
   }
 }
