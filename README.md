@@ -1,13 +1,10 @@
 # bandcamp-mini-embed [![Build status](https://badge.buildkite.com/c9d12772c3dff90c2d53ae333d2dd73eda7a384ae3a9d02bdd.svg?branch=main)](https://buildkite.com/nchlswhttkr/bandcamp-mini-embed)
 
-A music player embed for Bandcamp albums
+A music player embed for Bandcamp albums. Does this count as a microfrontend?
 
-- Can display compilation albums and albums with limited preview tracks
-- Embed multiple albums in a single page without conflicts
-- Lazy-loaded player, and no tracks are downloaded until you hit "Play"
+- Displays albums, singles, compilations, preview tracks
+- Lazy-loaded player, no tracks are downloaded until you hit "Play"
 - Dark mode friendly, keyboard friendly, and compatible with system media controls
-
-Does this count as a microfrontend?
 
 ![Three music players sit side by side - each player shows an album cover, details about the current song, music controls, and a list of tracks](./screenshots/albums.png)
 
